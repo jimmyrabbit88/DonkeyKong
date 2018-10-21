@@ -57,6 +57,9 @@ public class Dk  extends JComponent {
         Polygon p5 = new Polygon(xP5, yP5, 6);
         g.fillPolygon(p5);
 
+        g.setColor(new Color(0x3B962C));
+        g.fillOval(40,600,30, 50);
+
 
 
     }
