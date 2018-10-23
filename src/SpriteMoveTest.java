@@ -21,28 +21,36 @@ public class SpriteMoveTest extends JComponent implements ActionListener, KeyLis
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
         window.addKeyListener(gui);
-        Timer t = new Timer(100, gui);
+        Timer t = new Timer(10, gui);
         t.start();
 
     }
-    public Rectangle2D floor;
-    public Polygon player;
+
+
+
+
+
+
+
     int[] xPplayer = new int[]{50, 50,70,70};
     int[] yPplayer = new int[]{100, 120, 120, 100};
-    int[] xP4 = new int[]{0, 0, 600, 600};
-    int[] yP4 = new int[]{370, 390, 390, 370};
+    int[] xfloor = new int[]{0, 0, 600, 600};
+    int[] yfloor = new int[]{370, 390, 450, 430};
+
+    public Polygon player;
+    public Polygon floor;
 
     @Override
     protected void paintComponent(Graphics g) {
-        g.setColor(new Color(16));
+
+        g.setColor(new Color(0x54CC54));
         player = new Polygon(xPplayer, yPplayer, 4);
         g.fillPolygon(player);
 
 
         g.setColor(new Color(0x000000));
-
-        floor.setRect(0,370, 700, 30);
-        g.fil(floor);
+        floor = new Polygon(xfloor, yfloor, 4);
+        g.fillPolygon(floor);
 
 
     }
@@ -53,15 +61,28 @@ public class SpriteMoveTest extends JComponent implements ActionListener, KeyLis
     public void actionPerformed(ActionEvent e) {
 
 
-        if(player.intersects(floor)){
-            System.out.println("xx");
-        }
+     //   if(yPplayer[1]+1 <= yfloor[0]){
+     //       for(int i = 0; i< yPplayer.length; i++) {
+     //           yPplayer[i] += 5;
+     //       }
+     //       repaint();
+     //   }
 
-
-        for(int i = 0; i< yPplayer.length; i++) {
-            yPplayer[i] += 5;
+        if(floor.contains(xPplayer[2], yPplayer[2])){
+            for(int i = 0; i< yPplayer.length; i++) {
+                yPplayer[i] -= 1;
+            }
+            repaint();
         }
-        repaint();
+        else if(floor.contains(xPplayer[2] -1, yPplayer[2] +1)){
+            repaint();
+        }
+        else{
+            for(int i = 0; i< yPplayer.length; i++) {
+                yPplayer[i] += 1;
+            }
+            repaint();
+        }
 
     }
 
@@ -72,13 +93,30 @@ public class SpriteMoveTest extends JComponent implements ActionListener, KeyLis
 
     @Override
     public void keyPressed(KeyEvent e) {
+
         if(e.getKeyCode() == KeyEvent.VK_RIGHT){
             for(int i = 0; i< xPplayer.length; i++) {
                 xPplayer[i] += 5;
             }
+
             repaint();
         }
 
+        if(e.getKeyCode() == KeyEvent.VK_LEFT){
+            for(int i = 0; i< xPplayer.length; i++) {
+                xPplayer[i] -= 5;
+            }
+
+            repaint();
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_SPACE){
+            for(int i = 0; i< xPplayer.length; i++) {
+                yPplayer[i] -= 50;
+            }
+
+            repaint();
+        }
 
     }
 
