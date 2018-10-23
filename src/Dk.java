@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.security.Key;
+import java.util.concurrent.TimeUnit;
 
 public class Dk  extends JComponent implements KeyListener{
     int playerX = 40;
@@ -74,29 +75,22 @@ public class Dk  extends JComponent implements KeyListener{
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_SPACE){
-            for(int i=0; i<10; i++){
-                playerY +=2;
-                repaint(2);
 
-            }
-            for(int i=0; i<10; i++){
-                playerY -=2;
-                repaint(2);
-            }
-
-        }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-            playerX += 2;
+            playerX += 8;
             repaint();
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT){
-            playerX -= 2;
+            playerX -= 8;
             repaint();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_SPACE){
+
+
         }
 
 
