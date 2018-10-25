@@ -16,6 +16,12 @@ public class SpriteMoveTest extends JComponent implements ActionListener, KeyLis
 
     public Polygon player;
     public Polygon floor;
+    public Rectangle playerRect;
+    public Rectangle barrelRect;
+    public Polygon barrel;
+    Barrel b1 = new Barrel();
+
+    public boolean newBarrel = false;
 
     //public SpriteMoveTest(){
     public static void main(String[] args) {
@@ -49,13 +55,20 @@ public class SpriteMoveTest extends JComponent implements ActionListener, KeyLis
         g.setColor(new Color(0x000000));
         floor = new Polygon(xfloor, yfloor, 4);
         g.fillPolygon(floor);
+
+        if(newBarrel == true){
+            g.setColor(new Color(0xE0BE38));
+            barrel = new Polygon(b1.getxPoints(), b1.getyPoints(), 4);
+            g.fillPolygon(barrel);
+        }
     }
 
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Rectangle playerRect = player.getBounds();
+        // players actions
+        playerRect = player.getBounds();
         if (floor.intersects(playerRect)){
             for(int i = 0; i< yPplayer.length; i++) {
                 yPplayer[i] -= 1;
@@ -68,6 +81,20 @@ public class SpriteMoveTest extends JComponent implements ActionListener, KeyLis
                 yPplayer[i] += 1;
             }//end for
             repaint();
+        }//end if
+
+
+        while(newBarrel == true) {// barrel actions
+            barrelRect = barrel.getBounds();
+            if (floor.intersects(barrelRect)) {
+                b1.adjustYpoints(-2);
+                repaint();
+
+            } // end if
+            else {
+                b1.adjustYpoints(2);
+                repaint();
+            }
         }//end if
     }// end method
 
@@ -104,10 +131,17 @@ public class SpriteMoveTest extends JComponent implements ActionListener, KeyLis
             repaint();
         }//end if
 
+        // test barrel creation
+        if(e.getKeyCode() == KeyEvent.VK_B){
+            newBarrel = true;
+            repaint();
+        }//end if
+
     }//end key pressed method
 
     @Override
     public void keyReleased(KeyEvent e) {
+
 
     }//end key released
 
