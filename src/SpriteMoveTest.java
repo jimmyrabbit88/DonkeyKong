@@ -18,8 +18,11 @@ public class SpriteMoveTest extends JComponent implements ActionListener, KeyLis
     public Polygon floor;
     public Rectangle playerRect;
     public Rectangle barrelRect;
+    public Rectangle blockRect;
     public Polygon barrel;
     Barrel b1 = new Barrel();
+    Block block = new Block();
+
 
     public boolean newBarrel = false;
 
@@ -39,9 +42,11 @@ public class SpriteMoveTest extends JComponent implements ActionListener, KeyLis
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
         window.addKeyListener(gui);
-        Timer t = new Timer(10, gui);
+        Timer t = new Timer(25, gui);
         t.start();
+        t.addActionListener(gui);
     }
+
 
     //painting the screen
     @Override
@@ -56,11 +61,15 @@ public class SpriteMoveTest extends JComponent implements ActionListener, KeyLis
         floor = new Polygon(xfloor, yfloor, 4);
         g.fillPolygon(floor);
 
-        if(newBarrel == true){
-            g.setColor(new Color(0xE0BE38));
-            barrel = new Polygon(b1.getxPoints(), b1.getyPoints(), 4);
-            g.fillPolygon(barrel);
-        }
+
+            //System.out.println("here");
+        g.setColor(b1.getColor());
+        barrel = new Polygon(b1.getxPoints(), b1.getyPoints(), 4);
+        g.fillPolygon(barrel);
+
+        g.setColor(block.getColor());
+        g.fillOval(block.getXp(), block.getYp(), block.getW(), block.getH());
+
     }
 
 
@@ -73,29 +82,40 @@ public class SpriteMoveTest extends JComponent implements ActionListener, KeyLis
             for(int i = 0; i< yPplayer.length; i++) {
                 yPplayer[i] -= 1;
             }// end for
-            repaint();
+            //repaint();
 
         } // end if
         else {
             for (int i = 0; i < yPplayer.length; i++) {
                 yPplayer[i] += 1;
             }//end for
-            repaint();
+            //repaint();
         }//end if
 
 
-        while(newBarrel == true) {// barrel actions
-            barrelRect = barrel.getBounds();
-            if (floor.intersects(barrelRect)) {
-                b1.adjustYpoints(-2);
-                repaint();
+        //barrel actions
 
-            } // end if
-            else {
-                b1.adjustYpoints(2);
-                repaint();
-            }
-        }//end if
+
+        barrelRect = barrel.getBounds();
+        System.out.println(barrelRect.y);
+        if (floor.intersects(barrelRect)) {
+            b1.resetPoints();
+        } // end if
+        else {
+            b1.adjustYpoints(2);
+        }
+        //end if
+
+        if (floor.contains(block.getBLpoint())){
+            block.decY();
+            block.incX();
+
+        }
+        else {
+            block.incY();
+        }
+        repaint();
+
     }// end method
 
     //key input methods
@@ -134,6 +154,16 @@ public class SpriteMoveTest extends JComponent implements ActionListener, KeyLis
         // test barrel creation
         if(e.getKeyCode() == KeyEvent.VK_B){
             newBarrel = true;
+            repaint();
+        }//end if
+
+        if(e.getKeyCode() == KeyEvent.VK_L){
+            barrelRect = barrel.getBounds();
+           System.out.println(barrelRect.y);
+           if (floor.intersects(barrelRect)){
+                System.out.println("A");
+            }
+            b1.adjustYpoints(2);
             repaint();
         }//end if
 
