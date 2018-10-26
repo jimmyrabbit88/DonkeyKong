@@ -73,4 +73,8 @@ public class Block {
     public Point getBLpoint(){
         return new Point(xp, yp + h);
     }
+
+    public Point getBRpoint(){
+        return new Point(xp + w, yp + h);
+    }
 }

@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class Dk  extends JComponent implements KeyListener, ActionListener{
     //static Floors floor1 = new Floors();
     static Floors[] allfloors = new Floors[7];
+    static Polygon[] floorPolys = new Polygon[7];
     static Block block = new Block();
 
 
@@ -42,7 +43,8 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     protected void paintComponent(Graphics g) {
         for(int i=0; i<2; i++) {
             g.setColor(allfloors[i].getColor());
-            g.fillPolygon(allfloors[i].getXpoints(), allfloors[i].getYpoints(), allfloors[i].getNumpoints());
+            floorPolys[i] = new Polygon(allfloors[i].getXpoints(), allfloors[i].getYpoints(), allfloors[i].getNumpoints());
+            g.fillPolygon(floorPolys[i]);
         }
 
         //g.setColor(floor1.getColor());
@@ -84,18 +86,35 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        for(int i=0; i<2; i++) {
-            //System.out.println(allfloors[i].getYp());
-            if (allfloors[i].contains(block.getBLpoint())) {
-                block.decy();
-                block.incx();
+        //test if block is on floor
+        if (floorPolys[0].contains(block.getBLpoint())){
+            block.decy();
+            block.decx();
+        }//end if
+        //test if block is on any other platform
+        else {
+            for (int i = 1; i < 2; i++) {
+                if (floorPolys[i].contains(block.getBLpoint())) {
+                    block.decy();
+                    block.incx();
+                }//end if
+                else {
+                    System.out.println(block.getBLpoint().y);
+                    block.incy();
+                }//end else for bottom right
 
-            } else {
-                //System.out.println(block.getBLpoint().y);
-                block.incy();
-            }
-        }
+                //if bottom right makes contact
+                if (floorPolys[i].contains(block.getBRpoint())) {
+                    block.decy();
+                    block.decx();
 
+                }//end if
+                else {
+                    System.out.println(block.getBRpoint().y);
+                    block.incy();
+                }//end else bottom right contact
+            }//end for loop testing for contact with floor
+        }//end else for floor test
     repaint();
     }
 
