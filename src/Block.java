@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Block extends JComponent {
+public class Block {
     private Color color;
     private int xp;
     private int yp;
@@ -10,8 +10,8 @@ public class Block extends JComponent {
 
     public Block(){
         color = Color.BLUE;
-        xp = 300;
-        yp = 300;
+        xp = 0;
+        yp = 350;
         w = 30;
         h = 30;
     }
@@ -20,19 +20,19 @@ public class Block extends JComponent {
         return color;
     }
 
-    public int getXp() {
+    public int getxp() {
         return xp;
     }
 
-    public int getYp() {
+    public int getyp() {
         return yp;
     }
 
-    public int getW() {
+    public int getw() {
         return w;
     }
 
-    public int getH() {
+    public int geth() {
         return h;
     }
 
@@ -40,33 +40,33 @@ public class Block extends JComponent {
         this.color = color;
     }
 
-    public void setXp(int xp) {
+    public void setxp(int xp) {
         this.xp = xp;
     }
 
-    public void setYp(int yp) {
+    public void setyp(int yp) {
         this.yp = yp;
     }
 
-    public void setW(int w) {
+    public void setw(int w) {
         this.w = w;
     }
 
-    public void setH(int h) {
+    public void seth(int h) {
         this.h = h;
     }
 
-    public void incY(){
+    public void incy(){
         yp += 1;
     }
-    public void decY(){
+    public void decy(){
         yp -= 1;
     }
 
-    public void incX(){
+    public void incx(){
         xp += 1;
     }
-    public void decX(){
+    public void decx(){
         xp -= 1;
     }
 

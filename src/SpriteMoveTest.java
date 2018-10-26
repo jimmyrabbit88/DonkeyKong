@@ -68,7 +68,7 @@ public class SpriteMoveTest extends JComponent implements ActionListener, KeyLis
         g.fillPolygon(barrel);
 
         g.setColor(block.getColor());
-        g.fillOval(block.getXp(), block.getYp(), block.getW(), block.getH());
+        g.fillOval(block.getxp(), block.getyp(), block.getw(), block.geth());
 
     }
 
@@ -107,12 +107,12 @@ public class SpriteMoveTest extends JComponent implements ActionListener, KeyLis
         //end if
 
         if (floor.contains(block.getBLpoint())){
-            block.decY();
-            block.incX();
+            block.decy();
+            block.incx();
 
         }
         else {
-            block.incY();
+            block.incy();
         }
         repaint();
 

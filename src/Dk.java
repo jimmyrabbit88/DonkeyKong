@@ -7,67 +7,50 @@ import java.awt.event.KeyListener;
 import java.security.Key;
 import java.util.concurrent.TimeUnit;
 
-public class Dk  extends JComponent implements KeyListener{
-    int playerX = 40;
-    int playerY = 600;
+public class Dk  extends JComponent implements KeyListener, ActionListener{
+    //static Floors floor1 = new Floors();
+    static Floors[] allfloors = new Floors[7];
+    static Block block = new Block();
+
+
+
 
     public static void main(String[] args) {
-        int winWidth = 600;
-        int winHeight = 720;
+        generatefloors();
+        startGame();
 
+    }
 
-        JFrame window = new JFrame("Donkey Kong");
+    public static void startGame() {
         Dk gui = new Dk();
-        window.add(gui);
+        JFrame window = new JFrame("my game");
         window.pack();
-        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        window.setLocation(50, 10);
-        window.setSize(winWidth, winHeight);
+        window.add(gui);
+        window.setLocation(50, 50);
+        window.setSize(600, 600);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
         window.addKeyListener(gui);
+        Timer t = new Timer(25, gui);
+        t.start();
+        t.addActionListener(gui);
 
     }
 
 
     @Override
     protected void paintComponent(Graphics g) {
-        // build floor
-        g.setColor(new Color(0x000000));
-        g.fillRect(0, 650, 600, 30);
+        for(int i=0; i<2; i++) {
+            g.setColor(allfloors[i].getColor());
+            g.fillPolygon(allfloors[i].getXpoints(), allfloors[i].getYpoints(), allfloors[i].getNumpoints());
+        }
 
-        // build first platform
-        int[] xP1 = new int[]{0, 0, 500, 500};
-        int[] yP1 = new int[]{500, 520, 540, 520};
-        Polygon p1 = new Polygon(xP1, yP1, 4);
-        g.fillPolygon(p1);
+        //g.setColor(floor1.getColor());
+        //g.fillPolygon(floor1.getXpoints(), floor1.getYpoints(), floor1.getNumpoints());
 
-        // second platform
-        int[] xP2 = new int[]{100, 100, 600, 600};
-        int[] yP2 = new int[]{400, 420, 400, 380};
-        //Polygon p2 = new Polygon(xP2, yP2, 4);
-        //g.fillPolygon(p2);
 
-        // third platform
-        int[] xP3 = new int[]{0, 0, 500, 500};
-        int[] yP3 = new int[]{270, 290, 310, 290};
-        //Polygon p3 = new Polygon(xP3, yP3, 4);
-        //g.fillPolygon(p3);
-
-        // fourth platform
-        int[] xP4 = new int[]{100, 100, 600, 600};
-        int[] yP4 = new int[]{170, 190, 170, 150};
-        //Polygon p4 = new Polygon(xP4, yP4, 4);
-        //g.fillPolygon(p4);
-
-        // fifth platform
-        int[] xP5 = new int[]{0, 0, 100, 500, 500, 100};
-        int[] yP5 = new int[]{70, 90, 90, 110, 90, 70};
-        //Polygon p5 = new Polygon(xP5, yP5, 6);
-        //g.fillPolygon(p5);
-
-        g.setColor(new Color(0x3B962C));
-        g.fillOval(playerX, playerY, 30, 50);
-
+        g.setColor(block.getColor());
+        g.fillOval(block.getxp(), block.getyp(), block.getw(), block.geth());
 
     }
 
@@ -81,12 +64,10 @@ public class Dk  extends JComponent implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-            playerX += 8;
-            repaint();
+
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT){
-            playerX -= 8;
-            repaint();
+
         }
         if (e.getKeyCode() == KeyEvent.VK_SPACE){
 
@@ -99,6 +80,30 @@ public class Dk  extends JComponent implements KeyListener{
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        for(int i=0; i<2; i++) {
+            //System.out.println(allfloors[i].getYp());
+            if (allfloors[i].contains(block.getBLpoint())) {
+                block.decy();
+                block.incx();
+
+            } else {
+                //System.out.println(block.getBLpoint().y);
+                block.incy();
+            }
+        }
+
+    repaint();
+    }
+
+    public static void generatefloors(){
+        allfloors[0] = new Floors();
+        int[] xpoints = new int[]{0,0,500,500};
+        int[] ypoints = new int[]{420,450,480,450};
+        allfloors[1] = new Floors(xpoints, ypoints);
     }
 }
 
