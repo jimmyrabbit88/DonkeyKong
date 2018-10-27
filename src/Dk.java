@@ -8,21 +8,28 @@ import java.security.Key;
 import java.util.concurrent.TimeUnit;
 
 public class Dk  extends JComponent implements KeyListener, ActionListener{
-    //static Floors floor1 = new Floors();
     static Floors[] allfloors = new Floors[7];
     static Polygon[] floorPolys = new Polygon[7];
-    static Block block = new Block();
+    static Block[] allBlocks = new Block[20];
+
+
+
+    static int framecount = 0;
+    public int TTNB = 300;  // this may be changed here to alter speed of new block eg level 2 may be harder.
 
 
 
 
     public static void main(String[] args) {
+        //this is the main code it generates the floor all the game objects and starts the GUI
         generatefloors();
+        generateBlocks();
         startGame();
 
     }
 
     public static void startGame() {
+        //GUI
         Dk gui = new Dk();
         JFrame window = new JFrame("my game");
         window.pack();
@@ -38,22 +45,38 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
     }
 
-
+    // qverwriting the paint component method, this method is called automatically when the window is created or moved.
+    // it is called by the repaint method.
     @Override
     protected void paintComponent(Graphics g) {
+        //Here the floors are passed to in as attributes to create instances of the polygon class. the floor.contains or floor.intersects methods only work with Polygons.
         for(int i=0; i<6; i++) {
             g.setColor(allfloors[i].getColor());
             floorPolys[i] = new Polygon(allfloors[i].getXpoints(), allfloors[i].getYpoints(), allfloors[i].getNumpoints());
             g.fillPolygon(floorPolys[i]);
         }
 
-        //g.setColor(floor1.getColor());
-        //g.fillPolygon(floor1.getXpoints(), floor1.getYpoints(), floor1.getNumpoints());
-
-
-        g.setColor(block.getColor());
-        g.fillOval(block.getxp(), block.getyp(), block.getw(), block.geth());
-
+        //Here the array of blocks are tested, if the color of the block is Blue it painted to the screen.
+        //Initially only the first block is Blue
+        /*The framecount is counting the number of times the scene has been repainted when it reaches the TTNB (time to new Block) the first White block in the Blocks array
+            that blocks color is set to Blue.
+        */
+        for(int i=0; i<allBlocks.length; i++){
+            if(allBlocks[i].getColor() == Color.BLUE){
+                g.setColor(Color.BLUE);
+                g.fillOval(allBlocks[i].getxp(), allBlocks[i].getyp(), allBlocks[i].getw(), allBlocks[i].geth());
+            }
+        }
+        if (framecount == TTNB){
+            for(int i=0; i<allBlocks.length; i++) {
+                if (allBlocks[i].getColor() == Color.WHITE) {
+                    allBlocks[i].setColor(Color.BLUE);
+                    framecount = 0;
+                    break;
+                }
+            }
+        }
+        framecount++;
     }
 
 
@@ -83,64 +106,56 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     public void keyReleased(KeyEvent e) {
 
     }
-
+    // Action method which is called when the timer reaches its limit
     @Override
     public void actionPerformed(ActionEvent e) {
-        //test if block is on floor
-        if (floorPolys[0].contains(block.getBLpoint())){
-            block.decy();
-            block.decx();
-        }//end if
-        //test if block is on any other platform
-        else {
-            for (int i = 1; i < 6; i++) {
-                if (floorPolys[i].contains(block.getBLpoint())) {
-                    block.decy();
-                    block.incx();
-                }//end if
-                else {
-                    //block.incy();
-                }//end else for bottom right
+        //itterates through all blocks and if their color is Blue calls the instance method runPath
+        //Run Path is a predefined path each block takes to get to the bottom of the game map
+        for(int i=0; i<allBlocks.length; i++){
+            if(allBlocks[i].getColor() == Color.BLUE){
+                allBlocks[i].runPath();
+            }
+        }
+        repaint();
 
-                //if bottom right makes contact
-                if (floorPolys[i].contains(block.getBRpoint())) {
-                    block.decy();
-                    block.decx();
 
-                }//end if
-                else {
-                    //block.incy();
-                }//end else bottom right contact
-            }//end for loop testing for contact with floor
-            block.incy();
-        }//end else for floor test
-    repaint();
-    }
 
+    }// end the action listener
+
+    //Here i am generating the platforms of the game map
+    //Do not edit these numbers
     public static void generatefloors(){
         allfloors[0] = new Floors();
 
         int[] xpoints = new int[]{0, 0, 500, 500};
-        int[] ypoints = new int[]{120, 150, 170, 140};
+        int[] ypoints = new int[]{120, 150, 160, 130};
         allfloors[5] = new Floors(xpoints, ypoints);
 
         xpoints = new int[]{100, 100, 600, 600};
-        ypoints = new int[]{240, 270, 250, 220};
+        ypoints = new int[]{230, 260, 250, 220};
         allfloors[4] = new Floors(xpoints, ypoints);
 
         xpoints = new int[]{0, 0, 500, 500};
-        ypoints = new int[]{320, 350, 370, 340};
+        ypoints = new int[]{320, 350, 360, 330};
         allfloors[3] = new Floors(xpoints, ypoints);
 
         xpoints = new int[]{100, 100, 600, 600};
-        ypoints = new int[]{440, 470, 450, 420};
+        ypoints = new int[]{430, 460, 450, 420};
         allfloors[2] = new Floors(xpoints, ypoints);
 
         xpoints = new int[]{0, 0, 500, 500};
-        ypoints = new int[]{520, 550, 570, 540};
+        ypoints = new int[]{520, 550, 560, 530};
         allfloors[1] = new Floors(xpoints, ypoints);
-
-
     }
+
+    //Here I am generating the array of blocks
+    public static void generateBlocks(){
+        for(int i=0; i<allBlocks.length;i++){
+            allBlocks[i] = new Block();
+            System.out.println("A");
+        }
+        allBlocks[0].setColor(Color.BLUE);
+    }
+
 }
 
