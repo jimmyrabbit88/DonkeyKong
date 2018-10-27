@@ -15,7 +15,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
 
     static int framecount = 0;
-    public int TTNB = 300;  // this may be changed here to alter speed of new block eg level 2 may be harder.
+    public int TTNB = 25;  // this may be changed here to alter speed of new block eg level 2 may be harder.
 
 
 
@@ -39,7 +39,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
         window.addKeyListener(gui);
-        Timer t = new Timer(25, gui);
+        Timer t = new Timer(3, gui);
         t.start();
         t.addActionListener(gui);
 
@@ -75,7 +75,9 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
                     break;
                 }
             }
+            framecount = 0;
         }
+
         framecount++;
     }
 

@@ -171,12 +171,12 @@ public class Block {
             counter++;
             return;
         }
-        if (counter <= 3330){
+        if (counter <= 3310){
             decx();
             counter++;
             return;
         }
-        if (counter == 3331){
+        if (counter == 3311){
             counter = 0;
             counterFR = 0;
             setxp(1);
