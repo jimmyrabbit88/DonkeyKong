@@ -17,7 +17,7 @@ public class Floors extends JComponent {
         w = 600;
         h = 30;
         xpoints = new int[]{0,0,600,600};
-        ypoints = new int[]{550,580,580,550};
+        ypoints = new int[]{650,680,680,650};
         numpoints = 4;
         color = Color.BLACK;
     }

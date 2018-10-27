@@ -10,8 +10,8 @@ public class Block {
 
     public Block(){
         color = Color.BLUE;
-        xp = 0;
-        yp = 350;
+        xp = 1;
+        yp = 1;
         w = 30;
         h = 30;
     }
