@@ -11,11 +11,12 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     static Floors[] allfloors = new Floors[7];
     static Polygon[] floorPolys = new Polygon[7];
     static Block[] allBlocks = new Block[20];
+    static Player player = new Player();
 
 
 
     static int framecount = 0;
-    public int TTNB = 25;  // this may be changed here to alter speed of new block eg level 2 may be harder.
+    public int TTNB = 300;  // this may be changed here to alter speed of new block eg level 2 may be harder.
 
 
 
@@ -39,7 +40,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
         window.addKeyListener(gui);
-        Timer t = new Timer(3, gui);
+        Timer t = new Timer(25, gui);
         t.start();
         t.addActionListener(gui);
 
@@ -54,7 +55,15 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             g.setColor(allfloors[i].getColor());
             floorPolys[i] = new Polygon(allfloors[i].getXpoints(), allfloors[i].getYpoints(), allfloors[i].getNumpoints());
             g.fillPolygon(floorPolys[i]);
-        }
+        }//end for draw floors
+
+
+        
+        //Here the player is drawn.
+        g.setColor(player.getColor());
+        g.fillOval(player.getXp(), player.getYp(), player.getW(), player.getH());
+
+
 
         //Here the array of blocks are tested, if the color of the block is Blue it painted to the screen.
         //Initially only the first block is Blue
@@ -91,12 +100,15 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT){
+            player.moveRight();
 
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT){
+            player.moveLeft();
 
         }
         if (e.getKeyCode() == KeyEvent.VK_SPACE){
+
 
 
         }
@@ -113,11 +125,25 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     public void actionPerformed(ActionEvent e) {
         //itterates through all blocks and if their color is Blue calls the instance method runPath
         //Run Path is a predefined path each block takes to get to the bottom of the game map
-        for(int i=0; i<allBlocks.length; i++){
-            if(allBlocks[i].getColor() == Color.BLUE){
-                allBlocks[i].runPath();
+        for (Block b : allBlocks) {
+            if (b.getColor() == Color.BLUE) {
+                b.runPath();
             }
         }
+
+
+        if (allfloors[0].contains(player.bottom())){
+            System.out.println("a");
+            player.moveUp();
+        }
+        else{
+            System.out.println("B");
+            player.moveDown();
+        }
+
+
+
+
         repaint();
 
 
@@ -154,7 +180,6 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     public static void generateBlocks(){
         for(int i=0; i<allBlocks.length;i++){
             allBlocks[i] = new Block();
-            System.out.println("A");
         }
         allBlocks[0].setColor(Color.BLUE);
     }
