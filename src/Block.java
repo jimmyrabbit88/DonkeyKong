@@ -207,4 +207,26 @@ public class Block {
             counterFR = 0;
         }
     }
+    // centerPoint
+    public Point getCP(){
+        return new Point(getxp() + (getw()/2), getyp() + (geth()/2));
+    }
+
+    //return the four points for each block
+    public Point blockPoint(int i){
+        switch (i){
+            case 0:
+                return new Point(getxp() + (getw()/2), getyp());
+            case 1:
+                return new Point(getxp(), getyp() +(geth()/2));
+            case 2:
+                return new Point(getxp() + (getw()/2), getyp() + geth());
+            case 3:
+                return new Point(getxp() + getw(), getyp() + (geth()/2));
+            default:
+                break;
+
+        }
+        return new Point(0,0);
+    }
 }

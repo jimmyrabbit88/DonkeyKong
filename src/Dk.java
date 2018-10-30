@@ -58,10 +58,10 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         }//end for draw floors
 
 
-        
+
         //Here the player is drawn.
         g.setColor(player.getColor());
-        g.fillOval(player.getXp(), player.getYp(), player.getW(), player.getH());
+        g.fillRect(player.getXp(), player.getYp(), player.getW(), player.getH());
 
 
 
@@ -108,6 +108,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
         }
         if (e.getKeyCode() == KeyEvent.VK_SPACE){
+            player.setJump(true);
 
 
 
@@ -131,18 +132,53 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             }
         }
 
-
+/*
         if (allfloors[0].contains(player.bottom())){
             System.out.println("a");
-            player.moveUp();
         }
         else{
             System.out.println("B");
+        }
+//*/
+        boolean floorContainsPlayer = false;
+        for(int i=0; i<6; i++) {
+            if (floorPolys[i].contains(player.bottom())) {
+                floorContainsPlayer = true;
+                break;
+            }
+        }
+        if (floorContainsPlayer){
+            player.moveUp();
+        }
+        else{
             player.moveDown();
         }
 
+        //Player Jump sequence
+        //When the user presses the space key the player sprite is moved up and is delayed at the top of his jump
+        //Hopefully this sequence can be altered later when all movements can be offset
+        if (player.isJump()){
+            if (player.getJumpCount() < 40){
+                player.moveUp(2);
+                player.jumpCountadd();
+            }
+            else if (player.getJumpCount() < 80){
+                player.moveUp(1);
+                player.jumpCountadd();
+            }
+            else{
+                player.setJump(false);
+                player.setJumpCount(0);
+            }
+        }
 
-
+       // for (int i=0; i< allBlocks.length;i++) {
+        for (Block b:allBlocks) {
+            if (player.touches(b)) {
+                System.out.println("xxx");
+            }
+        }
+       // }
 
         repaint();
 
