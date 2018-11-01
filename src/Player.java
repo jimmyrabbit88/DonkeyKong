@@ -7,7 +7,7 @@ public class Player extends JComponent {
     private int yp;
     private int w;
     private int h;
-    private Point[] playerPoints = new Point[9];
+    private Point[] playerPoints = new Point[8];
     // jump sequence attributes
     private boolean jump = false;
     private int jumpCount = 0;
@@ -76,8 +76,12 @@ public class Player extends JComponent {
     }
 
 
+    public Point bottomPlus1(){
+        return new Point(getXp() + (getW()/2), getYp() + (getH() + 1));
+    }
+
     public Point bottom(){
-        return new Point(getXp(), getYp() + getH());
+        return new Point(getXp() + (getW()/2), getYp() + getH());
     }
 
 
@@ -128,21 +132,24 @@ public class Player extends JComponent {
     //atttempting to write a touches algorithim
     //create an array of points for Player
     public void PopPointsArray(){
-        playerPoints[0] = new Point(getXp()                , getYp());
-        playerPoints[1] = new Point(getXp()                , getYp() + (getH()/2));
-        playerPoints[2] = new Point(getXp()                , getYp() + getH());
+        playerPoints[0] = new Point(getXp(), getYp());
+        playerPoints[1] = new Point(getXp(), getYp() + (getH()/2));
+        playerPoints[2] = new Point(getXp(), getYp() + getH());
         playerPoints[3] = new Point(getXp() + (getW()/2), getYp() + getH());
-        playerPoints[4] = new Point(getXp() + getW()    , getYp() + getH());
-        playerPoints[5] = new Point(getXp() + getW()    , getYp() + (getH()/2));
-        playerPoints[6] = new Point(getXp() + getW()    , getYp());
+        playerPoints[4] = new Point(getXp() + getW(), getYp() + getH());
+        playerPoints[5] = new Point(getXp() + getW(), getYp() + (getH()/2));
+        playerPoints[6] = new Point(getXp() + getW(), getYp());
         playerPoints[7] = new Point(getXp() + (getW()/2), getYp());
     }
 
     public boolean touches(Block b){
         Point cp = b.getCP();
-        for(Point p: playerPoints){
+        PopPointsArray();
+        //System.out.println(playerPoints[7].x + " "  +playerPoints[7].y);
+        for (Point p:playerPoints){
             if(Math.sqrt(((cp.x - p.x)*(cp.x - p.x)) + ((cp.y - p.y)*(cp.y - p.y))) <= 10){
                 return true;
+
             }
         }
         return false;

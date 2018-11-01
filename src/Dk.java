@@ -8,16 +8,18 @@ import java.security.Key;
 import java.util.concurrent.TimeUnit;
 
 public class Dk  extends JComponent implements KeyListener, ActionListener{
-    static Floors[] allfloors = new Floors[7];
-    static Polygon[] floorPolys = new Polygon[7];
+    static Floors[] allfloors = new Floors[6];
+    static Polygon[] floorPolys = new Polygon[6];
     static Block[] allBlocks = new Block[20];
     static Player player = new Player();
+    static Ladder[] ladders = new Ladder[6];
 
 
 
     static int framecount = 0;
     public int TTNB = 300;  // this may be changed here to alter speed of new block eg level 2 may be harder.
 
+    public boolean onLadder = false;
 
 
 
@@ -25,6 +27,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         //this is the main code it generates the floor all the game objects and starts the GUI
         generatefloors();
         generateBlocks();
+        generateLadders();
         startGame();
 
     }
@@ -57,6 +60,11 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             g.fillPolygon(floorPolys[i]);
         }//end for draw floors
 
+        for (Ladder l:ladders) {
+            g.setColor(l.getColor());
+            g.drawRect(l.getXp(), l.getYp(), l.getW(), l.getH());
+        }
+
 
 
         //Here the player is drawn.
@@ -70,23 +78,22 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         /*The framecount is counting the number of times the scene has been repainted when it reaches the TTNB (time to new Block) the first White block in the Blocks array
             that blocks color is set to Blue.
         */
-        for(int i=0; i<allBlocks.length; i++){
-            if(allBlocks[i].getColor() == Color.BLUE){
-                g.setColor(Color.BLUE);
-                g.fillOval(allBlocks[i].getxp(), allBlocks[i].getyp(), allBlocks[i].getw(), allBlocks[i].geth());
+        g.setColor(Color.BLUE);
+        for(Block b: allBlocks){
+            if(b.getColor() == Color.BLUE){
+                g.fillOval(b.getxp(), b.getyp(), b.getw(), b.geth());
             }
         }
         if (framecount == TTNB){
-            for(int i=0; i<allBlocks.length; i++) {
-                if (allBlocks[i].getColor() == Color.WHITE) {
-                    allBlocks[i].setColor(Color.BLUE);
+            for(Block b : allBlocks) {
+                if (b.getColor() == Color.WHITE) {
+                    b.setColor(Color.BLUE);
                     framecount = 0;
                     break;
                 }
             }
             framecount = 0;
         }
-
         framecount++;
     }
 
@@ -101,18 +108,32 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT){
             player.moveRight();
-
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT){
             player.moveLeft();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_UP){
+            for (Ladder l:ladders){
+                if ((player.getXp() < l.getXp() && player.getXp() >= (l.getXp() - 5)) &&
+                        (player.bottom().y >= l.getYp() && player.bottom().y <= (l.getYp() + l.getH()))){
+                    player.moveUp(3);
+                }
 
+            }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN){
+            for (Ladder l:ladders){
+                if ((player.getXp() < l.getXp() && player.getXp() >= (l.getXp() - 5)) &&
+                        (player.bottom().y >= (l.getYp() -1) && player.bottom().y <= (l.getYp() + l.getH()))){
+                    player.moveDown();
+                }
+
+            }
         }
         if (e.getKeyCode() == KeyEvent.VK_SPACE){
             player.setJump(true);
-
-
-
         }
+
 
 
     }
@@ -132,28 +153,40 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             }
         }
 
-/*
-        if (allfloors[0].contains(player.bottom())){
-            System.out.println("a");
-        }
-        else{
-            System.out.println("B");
-        }
-//*/
-        boolean floorContainsPlayer = false;
-        for(int i=0; i<6; i++) {
-            if (floorPolys[i].contains(player.bottom())) {
-                floorContainsPlayer = true;
+        // test to see if the player is in contact withe the floor
+        //the 2 player methods used here test the bottom center of the sprite and the bottom center plus 1
+        // when the plus1 test is true the player stops,
+        // gravity does not occur when player is on a ladder
+        for (Ladder l:ladders){
+            if ((player.getXp() < l.getXp() && player.getXp() >= (l.getXp() - 5)) &&
+                    (player.bottom().y >= l.getYp() && player.bottom().y <= (l.getYp() + l.getH()))){
+                onLadder = true;
                 break;
             }
-        }
-        if (floorContainsPlayer){
-            player.moveUp();
-        }
-        else{
-            player.moveDown();
+            else{
+                onLadder = false;
+            }
+
         }
 
+        if(onLadder == false) {
+            int floorContainsPlayer = 0;
+            for (Polygon f : floorPolys) {
+                if (f.contains(player.bottom())) {
+                    floorContainsPlayer = 2;
+
+                } else if (f.contains(player.bottomPlus1())) {
+                    floorContainsPlayer = 1;
+                    break;
+                }
+
+            }
+            if (floorContainsPlayer == 2) {
+                player.moveUp();
+            } else if (floorContainsPlayer == 0) {
+                player.moveDown();
+            }
+        }
         //Player Jump sequence
         //When the user presses the space key the player sprite is moved up and is delayed at the top of his jump
         //Hopefully this sequence can be altered later when all movements can be offset
@@ -172,10 +205,11 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             }
         }
 
-       // for (int i=0; i< allBlocks.length;i++) {
+       // test for contact between the player and the blocks
+       // for now this turns the player Pink, it will eventually reset the level
         for (Block b:allBlocks) {
             if (player.touches(b)) {
-                System.out.println("xxx");
+                player.setColor(Color.MAGENTA);
             }
         }
        // }
@@ -214,10 +248,20 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
     //Here I am generating the array of blocks
     public static void generateBlocks(){
-        for(int i=0; i<allBlocks.length;i++){
+        for(int i=0; i<allBlocks.length; i++){
             allBlocks[i] = new Block();
         }
         allBlocks[0].setColor(Color.BLUE);
+    }
+
+    // here i am generating the ladders
+    public static void generateLadders(){
+        ladders[0] = new Ladder(400, 128, 98);
+        ladders[1] = new Ladder(200, 239, 86);
+        ladders[2] = new Ladder(450, 330, 93);
+        ladders[3] = new Ladder(120, 430, 93);
+        ladders[4] = new Ladder(400, 528, 122);
+        ladders[5] = new Ladder(150, 0, 122);
     }
 
 }
