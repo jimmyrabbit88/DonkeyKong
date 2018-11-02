@@ -4,22 +4,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.security.Key;
-import java.util.concurrent.TimeUnit;
 
 public class Dk  extends JComponent implements KeyListener, ActionListener{
-    static Floors[] allfloors = new Floors[6];
-    static Polygon[] floorPolys = new Polygon[6];
-    static Block[] allBlocks = new Block[20];
-    static Player player = new Player();
-    static Ladder[] ladders = new Ladder[6];
+    private static Floors[] allfloors = new Floors[6];
+    private static Polygon[] floorPolys = new Polygon[6];
+    private static Block[] allBlocks = new Block[20];
+    private static Player player = new Player();
+    private static Ladder[] ladders = new Ladder[6];
+    private static User user = new User();
+    private static Timer t;
 
 
 
-    static int framecount = 0;
-    public int TTNB = 300;  // this may be changed here to alter speed of new block eg level 2 may be harder.
+    private static int framecount = 0;
+    private static int TTNB = 300;  // this may be changed here to alter speed of new block eg level 2 may be harder.
 
-    public boolean onLadder = false;
+    private boolean onLadder = false;
 
 
 
@@ -32,7 +32,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
     }
 
-    public static void startGame() {
+    private static void startGame() {
         //GUI
         Dk gui = new Dk();
         JFrame window = new JFrame("my game");
@@ -43,7 +43,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
         window.addKeyListener(gui);
-        Timer t = new Timer(25, gui);
+        t = new Timer(25, gui);
         t.start();
         t.addActionListener(gui);
 
@@ -92,9 +92,12 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
                     break;
                 }
             }
-            framecount = 0;
+
         }
         framecount++;
+
+        g.drawString("Score " + user.scoreToString(), 480, 50);
+        g.drawString("Lives " + user.livesToString(), 480, 30);
     }
 
 
@@ -169,7 +172,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
         }
 
-        if(onLadder == false) {
+        if(!onLadder) {
             int floorContainsPlayer = 0;
             for (Polygon f : floorPolys) {
                 if (f.contains(player.bottom())) {
@@ -191,6 +194,11 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         //When the user presses the space key the player sprite is moved up and is delayed at the top of his jump
         //Hopefully this sequence can be altered later when all movements can be offset
         if (player.isJump()){
+            for (Block b:allBlocks){
+                if ((player.getXp() == b.getxp()) && (b.getyp() - player.getYp()) <= 50 && (b.getyp() - player.getYp()) >= 0){
+                    user.scoreOverBlock();
+                }
+            }
             if (player.getJumpCount() < 40){
                 player.moveUp(2);
                 player.jumpCountadd();
@@ -209,10 +217,12 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
        // for now this turns the player Pink, it will eventually reset the level
         for (Block b:allBlocks) {
             if (player.touches(b)) {
-                player.setColor(Color.MAGENTA);
+                dead();
             }
         }
-       // }
+        if (player.getYp() <= 20){
+            nextLevel();
+        }
 
         repaint();
 
@@ -222,7 +232,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
     //Here i am generating the platforms of the game map
     //Do not edit these numbers
-    public static void generatefloors(){
+    private static void generatefloors(){
         allfloors[0] = new Floors();
 
         int[] xpoints = new int[]{0, 0, 500, 500};
@@ -247,7 +257,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     }
 
     //Here I am generating the array of blocks
-    public static void generateBlocks(){
+    private static void generateBlocks(){
         for(int i=0; i<allBlocks.length; i++){
             allBlocks[i] = new Block();
         }
@@ -255,13 +265,38 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     }
 
     // here i am generating the ladders
-    public static void generateLadders(){
+    private static void generateLadders(){
         ladders[0] = new Ladder(400, 128, 98);
         ladders[1] = new Ladder(200, 239, 86);
         ladders[2] = new Ladder(450, 330, 93);
         ladders[3] = new Ladder(120, 430, 93);
         ladders[4] = new Ladder(400, 528, 122);
-        ladders[5] = new Ladder(150, 0, 122);
+        ladders[5] = new Ladder(150, 0, 123);
+    }
+
+
+    private static void dead(){
+        t.stop();
+        if(user.getLives() > 0) {
+            generateBlocks();
+            player = new Player();
+            user.loseLife();
+            t.start();
+        }
+        else {
+
+        }
+    }
+
+    private static void nextLevel(){
+        t.stop();
+        generateBlocks();
+        player = new Player();
+        t.start();
+        user.addlife();
+        user.addMultiply();
+        TTNB = ((TTNB - 50);
+
     }
 
 }

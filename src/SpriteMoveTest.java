@@ -28,7 +28,7 @@ public class SpriteMoveTest extends JComponent implements ActionListener, KeyLis
 
     //public SpriteMoveTest(){
     public static void main(String[] args) {
-        startGame();
+        Dk.main(null);
 
     }
 
