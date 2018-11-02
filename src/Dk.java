@@ -295,7 +295,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         t.start();
         user.addlife();
         user.addMultiply();
-        TTNB = ((TTNB - 50);
+        TTNB = (TTNB - 50);
 
     }
 
