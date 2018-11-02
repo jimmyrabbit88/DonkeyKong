@@ -281,6 +281,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             generateBlocks();
             player = new Player();
             user.loseLife();
+            framecount=0;
             t.start();
         }
         else {
@@ -295,7 +296,8 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         t.start();
         user.addlife();
         user.addMultiply();
-        TTNB = (TTNB - 50);
+        framecount = 0;
+        TTNB -= 50;
 
     }
 
