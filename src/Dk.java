@@ -36,7 +36,6 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         //GUI
         Dk gui = new Dk();
         JFrame window = new JFrame("my game");
-        window.pack();
         window.add(gui);
         window.setLocation(350, 20);
         window.setSize(600, 700);
@@ -94,7 +93,12 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             }
 
         }
-        framecount++;
+        if (framecount > TTNB) {
+            framecount = 0;
+        }
+        else {
+            framecount++;
+        }
 
         g.drawString("Score " + user.scoreToString(), 480, 50);
         g.drawString("Lives " + user.livesToString(), 480, 30);

@@ -22,7 +22,6 @@ public class Player extends JComponent {
     }
 
 
-    // HERE
     // methods getters and setters that allow the player to jump
     // these have been kept together to allow them to be removed later if jump sequence is altered
 
@@ -56,7 +55,7 @@ public class Player extends JComponent {
     public void jumpCountless(){
         jumpCount--;
     }
-    //TO HERE
+    //end of jump sequence
 
     //methods
     public void moveRight(){
@@ -131,6 +130,7 @@ public class Player extends JComponent {
 
     //atttempting to write a touches algorithim
     //create an array of points for Player
+    //these are the outside points of the player and are calculated from the x,y coordinate
     public void PopPointsArray(){
         playerPoints[0] = new Point(getXp(), getYp());
         playerPoints[1] = new Point(getXp(), getYp() + (getH()/2));
@@ -142,6 +142,11 @@ public class Player extends JComponent {
         playerPoints[7] = new Point(getXp() + (getW()/2), getYp());
     }
 
+    /* test if player touchs one of the blocks
+    this is done by finding the center point of the block
+    and testing it against the 9 points of the player object.
+    while this is not perfect its close enough
+     */
     public boolean touches(Block b){
         Point cp = b.getCP();
         PopPointsArray();
