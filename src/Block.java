@@ -1,18 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Block {
+public abstract class Block {
     private Color color;
+    private boolean active;
     private int xp;
     private int yp;
     private int w;
     private int h;
     private static int blockNum;
-    private int counter=0;
-    private int counterFR;
 
     public Block(){
-        color = Color.WHITE;
+        active = false;
         xp = 1;
         yp = 1;
         w = 30;
@@ -28,12 +27,20 @@ public class Block {
         blockNum++;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     public int getBlockNum() {
         return blockNum;
     }
 
-    public Color getColor() {
-        return color;
+    public Boolean isActive() {
+        return active;
     }
 
     public int getxp() {
@@ -52,8 +59,8 @@ public class Block {
         return h;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void setxp(int xp) {
@@ -98,115 +105,9 @@ public class Block {
     //the Predefined path for each block
     //These may be altered to provide some randomness to the path
     //clean these up if time permits
-    public void runPath(){
-
-        if (counter <= 89){
-            incy();
-            counter++;
-            return;
-        }
-        if (counter == 90){
-            counterFR = 0;
-        }
-        if (counter <= 590){
-            fallRight();
-            counter++;
-            return;
-        }
-
-        if(counter <= 681){
-            incy();
-            counter++;
-            return;
-        }
-        if (counter == 682){
-            counterFR = 20;
-        }
-        if(counter <= 1115){
-            fallLeft();
-            counter++;
-            return;
-        }
-        if (counter<=1206){
-            incy();
-            counter++;
-            return;
-        }
-        if (counter == 1207){
-            counterFR = 15;
-        }
-        if (counter <= 1637){
-            fallRight();
-            counter++;
-            return;
-        }
-        if (counter == 1638){
-            counterFR = 20;
-        }
-        if (counter <= 1729){
-            incy();
-            counter++;
-            return;
-        }
-        if (counter <= 2160){
-            fallLeft();
-            counter++;
-            return;
-        }
-        if (counter == 2161){
-            counterFR = 20;
-        }
-        if (counter <= 2251){
-            incy();
-            counter++;
-            return;
-        }
-        if (counter <= 2684){
-            fallRight();
-            counter++;
-            return;
-        }
-        if (counter < 2804){
-            incy();
-            counter++;
-            return;
-        }
-        if (counter <= 3310){
-            decx();
-            counter++;
-            return;
-        }
-        if (counter == 3311){
-            counter = 0;
-            counterFR = 0;
-            setxp(1);
-            setyp(1);
-            setColor(Color.WHITE);
-
-        }
+    public abstract void runPath();
 
 
-
-
-
-    }
-    public void fallRight(){
-        incx();
-        counterFR++;
-        if (counterFR == 50){
-            incy();
-            counterFR = 0;
-        }
-    }
-
-    public void fallLeft(){
-        decx();
-        counterFR++;
-        if(counterFR == 50){
-            incy();
-            counterFR = 0;
-        }
-    }
     // centerPoint
     public Point getCP(){
         return new Point(getxp() + (getw()/2), getyp() + (geth()/2));

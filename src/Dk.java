@@ -8,7 +8,7 @@ import java.awt.event.KeyListener;
 public class Dk  extends JComponent implements KeyListener, ActionListener{
     private static Floors[] allfloors = new Floors[6];
     private static Polygon[] floorPolys = new Polygon[6];
-    private static Block[] allBlocks = new Block[20];
+    private static Block[] allBlocks = new Block[25];
     private static Player player = new Player();
     private static Ladder[] ladders = new Ladder[6];
     private static User user = new User();
@@ -39,6 +39,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         window.add(gui);
         window.setLocation(350, 20);
         window.setSize(600, 700);
+        window.setResizable(false);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
         window.addKeyListener(gui);
@@ -77,16 +78,17 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         /*The framecount is counting the number of times the scene has been repainted when it reaches the TTNB (time to new Block) the first White block in the Blocks array
             that blocks color is set to Blue.
         */
-        g.setColor(Color.BLUE);
+
         for(Block b: allBlocks){
-            if(b.getColor() == Color.BLUE){
+            if(b.isActive()){
+                g.setColor(b.getColor());
                 g.fillOval(b.getxp(), b.getyp(), b.getw(), b.geth());
             }
         }
         if (framecount == TTNB){
             for(Block b : allBlocks) {
-                if (b.getColor() == Color.WHITE) {
-                    b.setColor(Color.BLUE);
+                if (!b.isActive()) {
+                    b.setActive(true);
                     framecount = 0;
                     break;
                 }
@@ -100,6 +102,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             framecount++;
         }
 
+        g.setColor(Color.BLACK);
         g.drawString("Score " + user.scoreToString(), 480, 50);
         g.drawString("Lives " + user.livesToString(), 480, 30);
     }
@@ -155,7 +158,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         //itterates through all blocks and if their color is Blue calls the instance method runPath
         //Run Path is a predefined path each block takes to get to the bottom of the game map
         for (Block b : allBlocks) {
-            if (b.getColor() == Color.BLUE) {
+            if (b.isActive()) {
                 b.runPath();
             }
         }
@@ -263,9 +266,14 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     //Here I am generating the array of blocks
     private static void generateBlocks(){
         for(int i=0; i<allBlocks.length; i++){
-            allBlocks[i] = new Block();
+            if (i<= 20) {
+                allBlocks[i] = new PlainBlk();
+            }
+            else{
+                allBlocks[i] = new DropBlk();
+            }
         }
-        allBlocks[0].setColor(Color.BLUE);
+        allBlocks[0].setActive(true);
     }
 
     // here i am generating the ladders
