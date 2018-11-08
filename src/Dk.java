@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class Dk  extends JComponent implements KeyListener, ActionListener{
     private static Floors[] allfloors = new Floors[6];
@@ -95,6 +96,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             }
 
         }
+        
         if (framecount > TTNB) {
             framecount = 0;
         }
@@ -266,14 +268,14 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     //Here I am generating the array of blocks
     private static void generateBlocks(){
         for(int i=0; i<allBlocks.length; i++){
-            if (i<= 20) {
+            if((int)(Math.random()*10) < 7){
                 allBlocks[i] = new PlainBlk();
             }
             else{
                 allBlocks[i] = new DropBlk();
             }
         }
-        allBlocks[0].setActive(true);
+       allBlocks[0].setActive(true);
     }
 
     // here i am generating the ladders

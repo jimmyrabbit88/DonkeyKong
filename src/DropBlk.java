@@ -11,14 +11,21 @@ public class DropBlk extends Block implements Path {
     }
 
     public void runPath() {
-        if(counter < 570){
+        if(counter < 620){
             incy();
             counter++;
-            if (counter%10 == 0){
+            if (counter%5 == 0){
                 incx();
             }
             return;
 
+        }
+        if(counter < 750){
+            decx();
+            counter++;
+        }
+        if (counter == 750){
+            setActive(false);
         }
 
     }

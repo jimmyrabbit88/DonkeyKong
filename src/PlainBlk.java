@@ -111,7 +111,7 @@ public class PlainBlk extends Block implements Path{
             counterFR = 0;
             setxp(1);
             setyp(1);
-            setActive(false);
+            //setActive(false);
 
         }
 
