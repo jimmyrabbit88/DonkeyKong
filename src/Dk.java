@@ -51,7 +51,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
     }
 
-    // qverwriting the paint component method, this method is called automatically when the window is created or moved.
+    // overwriting the paint component method, this method is called automatically when the window is created or moved.
     // it is called by the repaint method.
     @Override
     protected void paintComponent(Graphics g) {

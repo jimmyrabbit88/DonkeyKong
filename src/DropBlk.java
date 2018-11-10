@@ -14,17 +14,17 @@ public class DropBlk extends Block implements Path {
         if(counter < 620){
             incy();
             counter++;
-            if (counter%5 == 0){
+            if (counter%2 == 0){
                 incx();
             }
             return;
 
         }
-        if(counter < 750){
+        if(counter < 950){
             decx();
             counter++;
         }
-        if (counter == 750){
+        if (counter == 950){
             setActive(false);
         }
 

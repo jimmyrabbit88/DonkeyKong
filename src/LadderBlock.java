@@ -63,6 +63,7 @@ public class LadderBlock extends Block implements Path{
         }
         if(counter == 581){
             counter = 790;
+            counterFR = 20;
         }
 
         if(counter <= 681){
@@ -73,6 +74,7 @@ public class LadderBlock extends Block implements Path{
         if (counter == 682){
             counterFR = 20;
         }
+        // now on platform 2
         if(counter <= 1115){
             fallLeft();
             counter++;
