@@ -11,7 +11,7 @@ public abstract class Block {
     private static int blockNum;
 
     public Block(){
-        active = false;
+        active = true;
         xp = 1;
         yp = 1;
         w = 30;
@@ -106,6 +106,7 @@ public abstract class Block {
     //These may be altered to provide some randomness to the path
     //clean these up if time permits
     public abstract void runPath();
+
 
 
     // centerPoint

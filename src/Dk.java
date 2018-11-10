@@ -9,7 +9,8 @@ import java.util.ArrayList;
 public class Dk  extends JComponent implements KeyListener, ActionListener{
     private static Floors[] allfloors = new Floors[6];
     private static Polygon[] floorPolys = new Polygon[6];
-    private static Block[] allBlocks = new Block[25];
+    //private static Block[] allBlocks = new Block[25];
+    private static ArrayList<Block> allBlocks = new ArrayList<>();
     private static Player player = new Player();
     private static Ladder[] ladders = new Ladder[6];
     private static User user = new User();
@@ -18,7 +19,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
 
     private static int framecount = 0;
-    private static int TTNB = 300;  // this may be changed here to alter speed of new block eg level 2 may be harder.
+    private static int TTNB = 50;  // this may be changed here to alter speed of new block eg level 2 may be harder.
 
     private boolean onLadder = false;
 
@@ -87,13 +88,15 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             }
         }
         if (framecount == TTNB){
-            for(Block b : allBlocks) {
+/*            for(Block b : allBlocks) {
                 if (!b.isActive()) {
                     b.setActive(true);
                     framecount = 0;
                     break;
                 }
             }
+*/          generateBlocks();
+            framecount = 0;
 
         }
         
@@ -107,6 +110,8 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         g.setColor(Color.BLACK);
         g.drawString("Score " + user.scoreToString(), 480, 50);
         g.drawString("Lives " + user.livesToString(), 480, 30);
+
+        cleanArrayListOfBlocks();
     }
 
 
@@ -267,7 +272,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
     //Here I am generating the array of blocks
     private static void generateBlocks(){
-        for(int i=0; i<allBlocks.length; i++){
+/*        for(int i=0; i<allBlocks.length; i++){
             if((int)(Math.random()*10) < 7){
                 allBlocks[i] = new PlainBlk();
             }
@@ -275,7 +280,14 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
                 allBlocks[i] = new DropBlk();
             }
         }
-       allBlocks[0].setActive(true);
+       allBlocks[0].setActive(true);*/
+
+        if ((int)(Math.random()*10) < 7){
+            allBlocks.add(new LadderBlock());
+        }
+        else{
+            allBlocks.add(new DropBlk());
+        }
     }
 
     // here i am generating the ladders
@@ -292,6 +304,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     private static void dead(){
         t.stop();
         if(user.getLives() > 0) {
+            allBlocks.removeAll(allBlocks);
             generateBlocks();
             player = new Player();
             user.loseLife();
@@ -312,6 +325,15 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         user.addMultiply();
         framecount = 0;
         TTNB -= 50;
+
+    }
+
+    private static void cleanArrayListOfBlocks(){
+        for (Block b : allBlocks) {
+            if (!b.isActive()) {
+                allBlocks.remove(b);
+            }
+        }
 
     }
 

@@ -1,13 +1,17 @@
 import java.awt.*;
 
-public class PlainBlk extends Block implements Path{
-    private int counter=0;
-    private int counterFR;
+public class LadderBlock extends Block implements Path{
+        private int counter = 0;
+        private int counterFR;
+        private boolean downLadder;
 
-    public PlainBlk(){
-        super();
-        super.setColor(Color.GREEN);
-    }
+        public LadderBlock(){
+            super();
+            super.setColor(Color.BLUE);
+
+            setDownLadder(false);
+
+        }
 
     public void fallRight(){
         incx();
@@ -17,7 +21,6 @@ public class PlainBlk extends Block implements Path{
             counterFR = 0;
         }
     }
-
     public void fallLeft(){
         decx();
         counterFR++;
@@ -27,8 +30,15 @@ public class PlainBlk extends Block implements Path{
         }
     }
 
+    public boolean isDownLadder() {
+        return downLadder;
+    }
 
+    public void setDownLadder(boolean downLadder) {
+        this.downLadder = downLadder;
+    }
 
+    @Override
     public void runPath() {
         if (counter <= 89){
             incy();
@@ -38,10 +48,21 @@ public class PlainBlk extends Block implements Path{
         if (counter == 90){
             counterFR = 0;
         }
-        if (counter <= 590){
+        if (counter == 485) {
+            random50();
+        }
+        if (counter <= 590 && downLadder == false){
             fallRight();
             counter++;
             return;
+        }
+        else if(counter <= 580 && downLadder == true) {
+            incy();
+            counter++;
+            return;
+        }
+        if(counter == 581){
+            counter = 790;
         }
 
         if(counter <= 681){
@@ -112,13 +133,15 @@ public class PlainBlk extends Block implements Path{
             setxp(1);
             setyp(1);
             setActive(false);
+        }
+        }
 
+        public void random50(){
+            if(Math.random() < .5f){
+                setDownLadder(true);
+            }
         }
 
 
-
-
-
-    }
 
 }
