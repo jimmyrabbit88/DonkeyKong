@@ -1,3 +1,6 @@
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.MediaPlayer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -31,6 +34,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         generateBlocks();
         generateLadders();
         startGame();
+        //JFXPanel fxPanel = new JFXPanel();
 
     }
 
@@ -211,6 +215,8 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             for (Block b:allBlocks){
                 if ((player.getXp() == b.getxp()) && (b.getyp() - player.getYp()) <= 50 && (b.getyp() - player.getYp()) >= 0){
                     user.scoreOverBlock();
+                    //String audioFile1 = "audio.jump.wav";
+                   // AudioPlayer.playAudio(audioFile1);
                 }
             }
             if (player.getJumpCount() < 40){
