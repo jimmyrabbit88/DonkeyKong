@@ -8,11 +8,11 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 
-public class IntroScreen extends JFrame implements ActionListener {
+public class IntroScreen extends JFrame implements ActionListener, Serializable{
     private static JMenu fileMenu;
     private static JMenu helpMenu;
     public static String username = "";
-    private static ArrayList<User> userArrayList;
+    private static ArrayList<User> userArrayList = new ArrayList<>();
 
     public static void main(String[] args) {
         loadHighScores();
@@ -51,7 +51,7 @@ public class IntroScreen extends JFrame implements ActionListener {
         highScores.setSize(100, 100);
         container.add(highScores);
 
-
+        // NEW GAME BUTTON
         newGame.addActionListener((ActionEvent e) -> {
                     if (!username.equals("")) {
                         this.setVisible(false);
@@ -61,7 +61,10 @@ public class IntroScreen extends JFrame implements ActionListener {
                     }
                 }
         );
+        //HIGH SCORES BUTTON
         highScores.addActionListener((ActionEvent e) -> {
+            loadHighScores();
+            System.out.println("high scores");
             for(User u:userArrayList) {
                 System.out.println(u.getName() + " :: " + u.getScore());
 
@@ -129,39 +132,34 @@ public class IntroScreen extends JFrame implements ActionListener {
         IntroScreen.username = username;
     }
 
-    public static void addHighScore(User usr) {
+    public static void addHighScore(User usr) throws IOException{
         userArrayList.add(usr);
+        System.out.println("A");
+        File file = new File("Scores.dat");
+        FileOutputStream fos = new FileOutputStream(file);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(userArrayList);
+        oos.close();
 
-        try {
-            File file = new File("Scores.dat");
-            FileOutputStream fos = new FileOutputStream(file);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(userArrayList);
-            oos.close();
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "FileNotFound: didn't work");
-            e.printStackTrace();
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "IOException: didn't work");
-            e.printStackTrace();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "open didn't work");
-            e.printStackTrace();
-
-        }
     }
 
     public static void loadHighScores() {
         try {
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Scores.dat"));
+            File file = new File("Scores.dat");
+            FileInputStream fis = new FileInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(fis);
             userArrayList = (ArrayList<User>) ois.readObject();
-        } catch (FileNotFoundException e) {
+            ois.close();
+        }
+        catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null, "FileNotFound: didn't work");
             e.printStackTrace();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             JOptionPane.showMessageDialog(null, "IOException: didn't work");
             e.printStackTrace();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             JOptionPane.showMessageDialog(null, "open didn't work");
             e.printStackTrace();
         }
