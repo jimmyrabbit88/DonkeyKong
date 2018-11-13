@@ -1,10 +1,12 @@
 import jdk.nashorn.internal.objects.Global;
 
 import javax.imageio.IIOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -23,14 +25,17 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
     public IntroScreen() {
         Container container;
 
+
         setTitle("Donkey Kong by Jason Dowling");
         setSize(500, 500);
         setLocation(400, 300);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //BufferedImage image = new BufferedImage(ImageIO.read(new File("resources\\images.jpg")));
 
         container = getContentPane();
         container.setLayout(null);
+
 
         createFileMenu();
         createHelpMenu();

@@ -18,9 +18,13 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     private static Dk gui;
     private boolean onLadder = false;
 
+    //image code
+    private static Image image;
+    //to here
+
 
     private static int framecount = 0;
-    private static int TTNB = 50;  // this may be changed here to alter speed of new block eg level 2 may be harder.
+    private static int TTNB = 200;  // this may be changed here to alter speed of new block eg level 2 may be harder.
 
 
 
@@ -33,6 +37,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         generateLadders();
         framecount = 0;
         user = new User();
+        setPlayerImage(0);
         startGame();
 
     }
@@ -72,7 +77,8 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
         //Here the player is drawn.
         g.setColor(player.getColor());
-        g.fillRect(player.getXp(), player.getYp(), player.getW(), player.getH());
+        g.drawImage(image, player.getXp(), player.getYp(), this);
+        //g.fillRect(player.getXp(), player.getYp(), player.getW(), player.getH());
 
         //Here the array of blocks are tested, if the color of the block is Blue it painted to the screen.
         //Initially only the first block is Blue
@@ -117,11 +123,13 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
         //Right Key
         if (e.getKeyCode() == KeyEvent.VK_RIGHT){
+            setPlayerImage(0);
             player.moveRight();
         }
 
         //Left Key
         if (e.getKeyCode() == KeyEvent.VK_LEFT){
+            setPlayerImage(1);
             player.moveLeft();
         }
 
@@ -227,7 +235,6 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         }
 
        // test for contact between the player and the blocks
-       // for now this turns the player Pink, it will eventually reset the level
         for (Block b:allBlocks) {
             if (player.touches(b)) {
                 try {
@@ -329,6 +336,19 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             if (!b.isActive()) {
                 allBlocks.remove(b);
             }
+        }
+    }
+
+    private static void setPlayerImage(int i){
+        switch (i){
+            case 0:
+                image = new ImageIcon("resources\\mario2.png").getImage();
+                break;
+            case 1:
+                image = new ImageIcon("resources\\marioGoingLeft.png").getImage();
+                break;
+
+
         }
     }
 

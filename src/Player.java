@@ -12,6 +12,8 @@ public class Player extends JComponent {
     private boolean jump = false;
     private int jumpCount = 0;
 
+
+
     //constructor
     public Player() {
         setColor(Color.GREEN);
