@@ -13,8 +13,9 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     private static ArrayList<Block> allBlocks = new ArrayList<>();
     private static Player player = new Player();
     private static Ladder[] ladders = new Ladder[6];
-    private static User user = new User();
+    private static User user;
     private static Timer t;
+    private static Dk gui;
 
 
 
@@ -30,13 +31,15 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         generatefloors();
         generateBlocks();
         generateLadders();
+        framecount = 0;
+        user = new User();
         startGame();
 
     }
 
     private static void startGame() {
         //GUI
-        Dk gui = new Dk();
+        gui = new Dk();
         JFrame window = new JFrame("my game");
         window.add(gui);
         window.setLocation(350, 20);
@@ -88,14 +91,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             }
         }
         if (framecount == TTNB){
-/*            for(Block b : allBlocks) {
-                if (!b.isActive()) {
-                    b.setActive(true);
-                    framecount = 0;
-                    break;
-                }
-            }
-*/          generateBlocks();
+        generateBlocks();
             framecount = 0;
 
         }
@@ -303,15 +299,20 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
     private static void dead(){
         t.stop();
+        user.loseLife();
         if(user.getLives() > 0) {
             allBlocks.removeAll(allBlocks);
             generateBlocks();
             player = new Player();
-            user.loseLife();
             framecount=0;
             t.start();
         }
         else {
+            gui.setVisible(false);
+            IntroScreen.main(null);
+            IntroScreen.addHighScore(user);
+
+
 
         }
     }

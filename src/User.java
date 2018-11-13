@@ -5,7 +5,7 @@ public class User {
     private int multiplyer;
 
     public User() {
-        setName("no name");
+        setName(IntroScreen.getUsername());
         setLives(3);
         setScore(0);
         setMultiplyer(1);
