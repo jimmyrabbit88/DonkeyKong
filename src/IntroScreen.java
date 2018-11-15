@@ -2,6 +2,7 @@ import jdk.nashorn.internal.objects.Global;
 import jdk.nashorn.internal.scripts.JO;
 
 import javax.imageio.IIOException;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +18,7 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
     private static JMenu helpMenu;
     public static String username = "";
     private static ArrayList<User> userArrayList = new ArrayList<>();
+    private ImageIcon image;
 
     public static void main(String[] args) {
         loadHighScores();
@@ -29,14 +31,21 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
 
 
         setTitle("Donkey Kong by Jason Dowling");
-        setSize(500, 500);
+        setSize(750, 450);
         setLocation(400, 300);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //BufferedImage image = new BufferedImage(ImageIO.read(new File("resources\\images.jpg")));
+        image = new ImageIcon("C:\\Users\\t00175979\\IdeaProjects\\DonkeyKong\\images\\homescreen.jpg");
+        //BufferedImage image = new ImageIO.read(new File("images\\homescreen.jpg"));
+        JLabel jLabel = new JLabel(image);
+        jLabel.setBounds(-15,0,750,350);
+
 
         container = getContentPane();
         container.setLayout(null);
+        container.add(jLabel);
+
+
 
 
         createFileMenu();
@@ -81,6 +90,8 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
             JOptionPane.showMessageDialog(null, jta);
                 }
         );
+
+        repaint();
 
     }
 
