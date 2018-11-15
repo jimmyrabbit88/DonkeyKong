@@ -11,6 +11,7 @@ public class Player extends JComponent {
     // jump sequence attributes
     private boolean jump = false;
     private int jumpCount = 0;
+    private boolean moving_right;
 
 
 
@@ -21,6 +22,7 @@ public class Player extends JComponent {
         setYp(530);
         setH(30);
         setW(30);
+        moving_right = true;
     }
 
 
@@ -94,7 +96,23 @@ public class Player extends JComponent {
                 image = new ImageIcon("images\\marioLeft.png").getImage();
                 break;
             case 3:
-                image = new ImageIcon("images\\marioJump.png").getImage();
+                if(this.moving_right) {
+                    image = new ImageIcon("images\\marioJump.png").getImage();
+                    break;
+                }
+                else{
+                    image = new ImageIcon("images\\marioJumpLeft.png").getImage();
+                    break;
+                }
+            case 4:
+                if(this.moving_right) {
+                    image = new ImageIcon("images\\marioRight.png").getImage();
+                    break;
+                }
+                else{
+                    image = new ImageIcon("images\\marioLeft.png").getImage();
+                    break;
+                }
         }
     }
 
@@ -121,6 +139,10 @@ public class Player extends JComponent {
         return h;
     }
 
+    public boolean isMoving_right() {
+        return moving_right;
+    }
+
     //setters
 
     public void setImage(Image image) {
@@ -141,6 +163,10 @@ public class Player extends JComponent {
 
     public void setH(int h) {
         this.h = h;
+    }
+
+    public void setMoving_right(boolean moving_right) {
+        this.moving_right = moving_right;
     }
 
     //atttempting to write a touches algorithim

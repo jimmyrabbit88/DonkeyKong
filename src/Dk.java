@@ -122,12 +122,14 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
         //Right Key
         if (e.getKeyCode() == KeyEvent.VK_RIGHT){
+            player.setMoving_right(true);
             player.changeImage(0);
             player.moveRight();
         }
 
         //Left Key
         if (e.getKeyCode() == KeyEvent.VK_LEFT){
+            player.setMoving_right(false);
             player.changeImage(1);
             player.moveLeft();
         }
@@ -229,7 +231,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
                 player.jumpCountadd();
             }
             else{
-                player.changeImage(0);
+                player.changeImage(4);
                 player.setJump(false);
                 player.setJumpCount(0);
             }

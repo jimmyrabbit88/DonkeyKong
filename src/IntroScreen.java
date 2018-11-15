@@ -1,4 +1,5 @@
 import jdk.nashorn.internal.objects.Global;
+import jdk.nashorn.internal.scripts.JO;
 
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
@@ -9,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class IntroScreen extends JFrame implements ActionListener, Serializable{
     private static JMenu fileMenu;
@@ -69,11 +71,14 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
         //HIGH SCORES BUTTON
         highScores.addActionListener((ActionEvent e) -> {
             loadHighScores();
-            System.out.println("high scores");
-            for(User u:userArrayList) {
-                System.out.println(u.getName() + " :: " + u.getScore());
-
+            JTextArea jta = new JTextArea("All High Scores");
+            jta.setFont(new Font("monospaced", Font.PLAIN, 12));
+            jta.setText(String.format("%-20s%-7s\n", "Name", "Score"));
+            getTopTen();
+            for(User usr : userArrayList){
+                jta.append(String.format("%-20s%-7s\n", usr.getName(), usr.getScore()));
             }
+            JOptionPane.showMessageDialog(null, jta);
                 }
         );
 
@@ -167,6 +172,33 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
         catch (Exception e) {
             JOptionPane.showMessageDialog(null, "open didn't work");
             e.printStackTrace();
+        }
+    }
+
+    public static void getTopTen(){
+        int highest = 0;
+        int index = 0;
+        int size;
+        User temp = new User();
+
+        if (userArrayList.size() > 10){
+            size = 10;
+        }
+        else{
+            size = userArrayList.size();
+        }
+        for(int i=0;i<size;i++){
+            for(int j=i; j<userArrayList.size(); j++){
+                if(userArrayList.get(j).getScore() > highest){
+                    highest = userArrayList.get(j).getScore();
+                    index = j;
+                }
+            }
+            temp = userArrayList.get(i);
+            userArrayList.set(i, userArrayList.get(index));
+            userArrayList.set(index, temp);
+            highest = 0;
+            index = 0;
         }
     }
 }
