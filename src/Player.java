@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Player extends JComponent {
-    private Color color;
+    private Image image;
     private int xp;
     private int yp;
     private int w;

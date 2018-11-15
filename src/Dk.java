@@ -155,6 +155,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
         //Space Key
         if (e.getKeyCode() == KeyEvent.VK_SPACE){
+            setPlayerImage(3);
             player.setJump(true);
         }
 
@@ -229,6 +230,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
                 player.jumpCountadd();
             }
             else{
+                setPlayerImage(0);
                 player.setJump(false);
                 player.setJumpCount(0);
             }
@@ -342,11 +344,13 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     private static void setPlayerImage(int i){
         switch (i){
             case 0:
-                image = new ImageIcon("resources\\mario2.png").getImage();
+                image = new ImageIcon("images\\marioRight.png").getImage();
                 break;
             case 1:
-                image = new ImageIcon("resources\\marioGoingLeft.png").getImage();
+                image = new ImageIcon("images\\marioLeft.png").getImage();
                 break;
+            case 3:
+                image = new ImageIcon("images\\marioJump.png").getImage();
 
 
         }
