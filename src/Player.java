@@ -16,7 +16,7 @@ public class Player extends JComponent {
 
     //constructor
     public Player() {
-        setColor(Color.GREEN);
+        setImage(image = new ImageIcon("images\\marioRight.png").getImage());
         setXp(100);
         setYp(530);
         setH(30);
@@ -85,11 +85,24 @@ public class Player extends JComponent {
         return new Point(getXp() + (getW()/2), getYp() + getH());
     }
 
+    public void changeImage(int i){
+        switch (i){
+            case 0:
+                image = new ImageIcon("images\\marioRight.png").getImage();
+                break;
+            case 1:
+                image = new ImageIcon("images\\marioLeft.png").getImage();
+                break;
+            case 3:
+                image = new ImageIcon("images\\marioJump.png").getImage();
+        }
+    }
+
 
     //getters
 
-    public Color getColor() {
-        return color;
+    public Image getImage() {
+        return image;
     }
 
     public int getXp() {
@@ -110,8 +123,8 @@ public class Player extends JComponent {
 
     //setters
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     public void setXp(int xp) {

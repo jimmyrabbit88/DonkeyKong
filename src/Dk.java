@@ -37,7 +37,6 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         generateLadders();
         framecount = 0;
         user = new User();
-        setPlayerImage(0);
         startGame();
 
     }
@@ -76,8 +75,8 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         }
 
         //Here the player is drawn.
-        g.setColor(player.getColor());
-        g.drawImage(image, player.getXp(), player.getYp(), this);
+        g.setColor(Color.WHITE);
+        g.drawImage(player.getImage(), player.getXp(), player.getYp(), this);
         //g.fillRect(player.getXp(), player.getYp(), player.getW(), player.getH());
 
         //Here the array of blocks are tested, if the color of the block is Blue it painted to the screen.
@@ -123,13 +122,13 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
         //Right Key
         if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-            setPlayerImage(0);
+            player.changeImage(0);
             player.moveRight();
         }
 
         //Left Key
         if (e.getKeyCode() == KeyEvent.VK_LEFT){
-            setPlayerImage(1);
+            player.changeImage(1);
             player.moveLeft();
         }
 
@@ -155,7 +154,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
         //Space Key
         if (e.getKeyCode() == KeyEvent.VK_SPACE){
-            setPlayerImage(3);
+            player.changeImage(3);
             player.setJump(true);
         }
 
@@ -230,7 +229,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
                 player.jumpCountadd();
             }
             else{
-                setPlayerImage(0);
+                player.changeImage(0);
                 player.setJump(false);
                 player.setJumpCount(0);
             }
@@ -341,20 +340,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         }
     }
 
-    private static void setPlayerImage(int i){
-        switch (i){
-            case 0:
-                image = new ImageIcon("images\\marioRight.png").getImage();
-                break;
-            case 1:
-                image = new ImageIcon("images\\marioLeft.png").getImage();
-                break;
-            case 3:
-                image = new ImageIcon("images\\marioJump.png").getImage();
 
-
-        }
-    }
 
 }
 
