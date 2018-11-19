@@ -31,9 +31,10 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
 
     public IntroScreen() {
         Container container;
-        setBounds(0,0,1010,550);
+        //setBounds(0,0,1010,550);
         setTitle("Donkey Kong by Jason Dowling");
-
+        setSize(1010, 550);
+        setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         image = new ImageIcon("C:\\Users\\t00175979\\IdeaProjects\\DonkeyKong\\images\\homescreen.png");
@@ -42,6 +43,7 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
         JLabel jLabel = new JLabel(image);
         jLabel.setBackground(Color.black);
         jLabel.setBounds(0,0, 1000, 500);
+
 
 
         container = getContentPane();
@@ -87,7 +89,7 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
         );
         //HIGH SCORES BUTTON
         highScores.addActionListener((ActionEvent e) -> {
-            loadHighScores();
+            /*JTextArealoadHighScores();
             JTextArea jta = new JTextArea("All High Scores");
             jta.setFont(new Font("monospaced", Font.PLAIN, 12));
             jta.setText(String.format("%-20s%-7s\n", "Name", "Score"));
@@ -96,8 +98,10 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
                 jta.append(String.format("%-20s%-7s\n", usr.getName(), usr.getScore()));
             }
             JOptionPane.showMessageDialog(null, jta);
-                }
-        );
+                */
+            highScores h = new highScores();
+
+        });
 
 
         repaint();
