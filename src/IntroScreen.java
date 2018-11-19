@@ -60,16 +60,20 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
         menuBar.add(helpMenu);
 
 
-        Button newGame = new Button("Start Game");
-        newGame.setLocation(100, 100);
-        newGame.setSize(100, 100);
-        jLabel.add(newGame);
+        JButton highScores = new JButton(new ImageIcon("images\\high.png"));
+        highScores.setLocation(400, 200);
+        highScores.setSize(250, 200);
+        highScores.setBackground(new Color(0x465485));
+        highScores.setBorder(null);
+        jLabel.add(highScores);
 
         //image = new ImageIcon("\\images\\play.png");
-        JButton highScores = new JButton(new ImageIcon("images\\play.png"));
-        highScores.setLocation(300, 100);
-        highScores.setSize(200, 100);
-        jLabel.add(highScores);
+        JButton newGame = new JButton(new ImageIcon("images\\start.png"));
+        newGame.setLocation(375, 100);
+        newGame.setBackground(new Color(0x465485));
+        newGame.setBorder(null);
+        newGame.setSize(300, 100);
+        jLabel.add(newGame);
 
         // NEW GAME BUTTON
         newGame.addActionListener((ActionEvent e) -> {
