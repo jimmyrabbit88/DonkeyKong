@@ -1,11 +1,13 @@
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String name;
     private int lives;
     private int score;
     private int multiplyer;
 
     public User() {
-        setName("no name");
+        setName(IntroScreen.getUsername());
         setLives(3);
         setScore(0);
         setMultiplyer(1);

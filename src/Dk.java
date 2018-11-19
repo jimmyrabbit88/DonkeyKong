@@ -7,24 +7,29 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Dk  extends JComponent implements KeyListener, ActionListener{
     private static Floors[] allfloors = new Floors[6];
     private static Polygon[] floorPolys = new Polygon[6];
-    //private static Block[] allBlocks = new Block[25];
     private static ArrayList<Block> allBlocks = new ArrayList<>();
     private static Player player = new Player();
     private static Ladder[] ladders = new Ladder[6];
-    private static User user = new User();
+    private static User user;
     private static Timer t;
+    private static Dk gui;
+    private boolean onLadder = false;
 
+    //image code
+    private static Image image;
+    //to here
 
 
     private static int framecount = 0;
-    private static int TTNB = 50;  // this may be changed here to alter speed of new block eg level 2 may be harder.
+    private static int TTNB = 200;  // this may be changed here to alter speed of new block eg level 2 may be harder.
 
-    private boolean onLadder = false;
+
 
 
 
@@ -33,6 +38,8 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         generatefloors();
         generateBlocks();
         generateLadders();
+        framecount = 0;
+        user = new User();
         startGame();
         //JFXPanel fxPanel = new JFXPanel();
 
@@ -40,7 +47,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
     private static void startGame() {
         //GUI
-        Dk gui = new Dk();
+        gui = new Dk();
         JFrame window = new JFrame("my game");
         window.add(gui);
         window.setLocation(350, 20);
@@ -71,20 +78,16 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             g.drawRect(l.getXp(), l.getYp(), l.getW(), l.getH());
         }
 
-
-
         //Here the player is drawn.
-        g.setColor(player.getColor());
-        g.fillRect(player.getXp(), player.getYp(), player.getW(), player.getH());
-
-
+        g.setColor(Color.WHITE);
+        g.drawImage(player.getImage(), player.getXp(), player.getYp(), this);
+        //g.fillRect(player.getXp(), player.getYp(), player.getW(), player.getH());
 
         //Here the array of blocks are tested, if the color of the block is Blue it painted to the screen.
         //Initially only the first block is Blue
         /*The framecount is counting the number of times the scene has been repainted when it reaches the TTNB (time to new Block) the first White block in the Blocks array
             that blocks color is set to Blue.
         */
-
         for(Block b: allBlocks){
             if(b.isActive()){
                 g.setColor(b.getColor());
@@ -92,16 +95,8 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             }
         }
         if (framecount == TTNB){
-/*            for(Block b : allBlocks) {
-                if (!b.isActive()) {
-                    b.setActive(true);
-                    framecount = 0;
-                    break;
-                }
-            }
-*/          generateBlocks();
+            generateBlocks();
             framecount = 0;
-
         }
         
         if (framecount > TTNB) {
@@ -111,6 +106,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             framecount++;
         }
 
+        //displaying the score and lives on the screen
         g.setColor(Color.BLACK);
         g.drawString("Score " + user.scoreToString(), 480, 50);
         g.drawString("Lives " + user.livesToString(), 480, 30);
@@ -127,31 +123,44 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
     @Override
     public void keyPressed(KeyEvent e) {
+
+        //Right Key
         if (e.getKeyCode() == KeyEvent.VK_RIGHT){
+            player.setMoving_right(true);
+            player.changeImage(0);
             player.moveRight();
         }
+
+        //Left Key
         if (e.getKeyCode() == KeyEvent.VK_LEFT){
+            player.setMoving_right(false);
+            player.changeImage(1);
             player.moveLeft();
         }
+
+        //Up Key
         if (e.getKeyCode() == KeyEvent.VK_UP){
             for (Ladder l:ladders){
                 if ((player.getXp() < l.getXp() && player.getXp() >= (l.getXp() - 5)) &&
                         (player.bottom().y >= l.getYp() && player.bottom().y <= (l.getYp() + l.getH()))){
                     player.moveUp(3);
                 }
-
             }
         }
+
+        //Down Key
         if (e.getKeyCode() == KeyEvent.VK_DOWN){
             for (Ladder l:ladders){
                 if ((player.getXp() < l.getXp() && player.getXp() >= (l.getXp() - 5)) &&
                         (player.bottom().y >= (l.getYp() -1) && player.bottom().y <= (l.getYp() + l.getH()))){
                     player.moveDown();
                 }
-
             }
         }
+
+        //Space Key
         if (e.getKeyCode() == KeyEvent.VK_SPACE){
+            player.changeImage(3);
             player.setJump(true);
         }
 
@@ -187,7 +196,6 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             else{
                 onLadder = false;
             }
-
         }
 
         if(!onLadder) {
@@ -195,16 +203,17 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             for (Polygon f : floorPolys) {
                 if (f.contains(player.bottom())) {
                     floorContainsPlayer = 2;
-
-                } else if (f.contains(player.bottomPlus1())) {
+                }
+                else if (f.contains(player.bottomPlus1())) {
                     floorContainsPlayer = 1;
                     break;
                 }
-
             }
+
             if (floorContainsPlayer == 2) {
                 player.moveUp();
-            } else if (floorContainsPlayer == 0) {
+            }
+            else if (floorContainsPlayer == 0) {
                 player.moveDown();
             }
         }
@@ -228,16 +237,20 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
                 player.jumpCountadd();
             }
             else{
+                player.changeImage(4);
                 player.setJump(false);
                 player.setJumpCount(0);
             }
         }
 
        // test for contact between the player and the blocks
-       // for now this turns the player Pink, it will eventually reset the level
         for (Block b:allBlocks) {
             if (player.touches(b)) {
-                dead();
+                try {
+                    dead();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         }
         if (player.getYp() <= 20){
@@ -278,15 +291,6 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
     //Here I am generating the array of blocks
     private static void generateBlocks(){
-/*        for(int i=0; i<allBlocks.length; i++){
-            if((int)(Math.random()*10) < 7){
-                allBlocks[i] = new PlainBlk();
-            }
-            else{
-                allBlocks[i] = new DropBlk();
-            }
-        }
-       allBlocks[0].setActive(true);*/
 
         if ((int)(Math.random()*10) < 7){
             allBlocks.add(new LadderBlock());
@@ -307,18 +311,20 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     }
 
 
-    private static void dead(){
+    private static void dead() throws IOException {
         t.stop();
+        user.loseLife();
         if(user.getLives() > 0) {
             allBlocks.removeAll(allBlocks);
             generateBlocks();
             player = new Player();
-            user.loseLife();
             framecount=0;
             t.start();
         }
         else {
-
+            gui.setVisible(false);
+            IntroScreen.main(null);
+            IntroScreen.addHighScore(user);
         }
     }
 
@@ -340,8 +346,9 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
                 allBlocks.remove(b);
             }
         }
-
     }
+
+
 
 }
 

@@ -1,28 +1,57 @@
+import jdk.nashorn.internal.objects.Global;
+import jdk.nashorn.internal.scripts.JO;
+
+import javax.imageio.IIOException;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
 
-public class IntroScreen extends JFrame implements ActionListener {
+public class IntroScreen extends JFrame implements ActionListener, Serializable{
     private static JMenu fileMenu;
     private static JMenu helpMenu;
+    public static String username = "";
+    private static ArrayList<User> userArrayList = new ArrayList<>();
+    private ImageIcon image;
+    private static int fullWidth;
+    private static int fullHeight;
 
     public static void main(String[] args) {
+        loadHighScores();
         IntroScreen is = new IntroScreen();
         is.setVisible(true);
+
     }
 
     public IntroScreen() {
         Container container;
-
+        //setBounds(0,0,1010,550);
         setTitle("Donkey Kong by Jason Dowling");
-        setSize(500, 500);
-        setLocation(400, 300);
+        setSize(1010, 550);
+        setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        image = new ImageIcon("C:\\Users\\t00175979\\IdeaProjects\\DonkeyKong\\images\\homescreen.png");
+
+
+        JLabel jLabel = new JLabel(image);
+        jLabel.setBackground(Color.black);
+        jLabel.setBounds(0,0, 1000, 500);
+
+
 
         container = getContentPane();
         container.setLayout(null);
+        container.add(jLabel);
+
+
+
 
         createFileMenu();
         createHelpMenu();
@@ -33,57 +62,89 @@ public class IntroScreen extends JFrame implements ActionListener {
         menuBar.add(helpMenu);
 
 
+        JButton highScores = new JButton(new ImageIcon("images\\high.png"));
+        highScores.setLocation(400, 200);
+        highScores.setSize(250, 200);
+        highScores.setBackground(new Color(0x465485));
+        highScores.setBorder(null);
+        jLabel.add(highScores);
 
-        Button newGame = new Button("Start Game");
-        newGame.setLocation(100, 100);
-        newGame.setSize(100, 100);
-        container.add(newGame);
+        //image = new ImageIcon("\\images\\play.png");
+        JButton newGame = new JButton(new ImageIcon("images\\start.png"));
+        newGame.setLocation(375, 100);
+        newGame.setBackground(new Color(0x465485));
+        newGame.setBorder(null);
+        newGame.setSize(300, 100);
+        jLabel.add(newGame);
 
-        Button highScores = new Button("High Scores");
-        highScores.setLocation(300, 100);
-        highScores.setSize(100, 100);
-        container.add(highScores);
-
-        newGame.addActionListener((ActionEvent e)->{
-            this.setVisible(false);
-            Dk.main(null);
-            }
-        );
-        highScores.addActionListener((ActionEvent e)->{
-
+        // NEW GAME BUTTON
+        newGame.addActionListener((ActionEvent e) -> {
+                    if (!username.equals("")) {
+                        this.setVisible(false);
+                        Dk.main(null);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "you must login first");
+                    }
                 }
         );
+        //HIGH SCORES BUTTON
+        highScores.addActionListener((ActionEvent e) -> {
+            /*JTextArealoadHighScores();
+            JTextArea jta = new JTextArea("All High Scores");
+            jta.setFont(new Font("monospaced", Font.PLAIN, 12));
+            jta.setText(String.format("%-20s%-7s\n", "Name", "Score"));
+            getTopTen();
+            for(User usr : userArrayList){
+                jta.append(String.format("%-20s%-7s\n", usr.getName(), usr.getScore()));
+            }
+            JOptionPane.showMessageDialog(null, jta);
+                */
+            highScores h = new highScores();
+
+        });
+
+
+        repaint();
+
+
 
     }
 
-    public static void createFileMenu(){
+    public static void createFileMenu() {
         JMenuItem item;
 
         fileMenu = new JMenu("File");
 
+        item = new JMenuItem("Login");
+        item.addActionListener((ActionEvent) -> {
+            login();
+        });
+        fileMenu.add(item);
+
+
         item = new JMenuItem("Exit");
-        item.addActionListener((ActionEvent e)->{
+        item.addActionListener((ActionEvent e) -> {
             System.exit(0);
         });
         fileMenu.add(item);
 
     }
 
-    public static void createHelpMenu(){
+    public static void createHelpMenu() {
         JMenuItem item;
 
         helpMenu = new JMenu("help");
 
         item = new JMenuItem("About");
-        item.addActionListener((ActionEvent e)->{
+        item.addActionListener((ActionEvent e) -> {
             JOptionPane.showMessageDialog(null, "Donkey Kong Remake. \nCreated by Jason Dowling.", "About", JOptionPane.INFORMATION_MESSAGE);
 
         });
         helpMenu.add(item);
 
         item = new JMenuItem("Controls");
-        item.addActionListener((ActionEvent e)->{
-            JOptionPane.showMessageDialog(null,"Move Player :: Arrow keys.\nJump        :: SpaceBar.\nScore Points for jumping over barrels." +
+        item.addActionListener((ActionEvent e) -> {
+            JOptionPane.showMessageDialog(null, "Move Player :: Arrow keys.\nJump        :: SpaceBar.\nScore Points for jumping over barrels." +
                     "\nClimb up the top ladder to progress to the next level where each barrel will be worth 2x Points.\nHowever barrels will be created at a higher rate...\n\nEnjoy!!");
 
         });
@@ -93,5 +154,77 @@ public class IntroScreen extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+    }
+
+    public static void login() {
+        username = JOptionPane.showInputDialog("Please enter your username");
+    }
+
+    public static String getUsername() {
+        return username;
+    }
+
+    public static void setUsername(String username) {
+        IntroScreen.username = username;
+    }
+
+    public static void addHighScore(User usr) throws IOException{
+        userArrayList.add(usr);
+        System.out.println("A");
+        File file = new File("Scores.dat");
+        FileOutputStream fos = new FileOutputStream(file);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(userArrayList);
+        oos.close();
+
+    }
+
+    public static void loadHighScores() {
+        try {
+            File file = new File("Scores.dat");
+            FileInputStream fis = new FileInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            userArrayList = (ArrayList<User>) ois.readObject();
+            ois.close();
+        }
+        catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "FileNotFound: didn't work");
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "IOException: didn't work");
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "open didn't work");
+            e.printStackTrace();
+        }
+    }
+
+    public static void getTopTen(){
+        int highest = 0;
+        int index = 0;
+        int size;
+        User temp = new User();
+
+        if (userArrayList.size() > 10){
+            size = 10;
+        }
+        else{
+            size = userArrayList.size();
+        }
+        for(int i=0;i<size;i++){
+            for(int j=i; j<userArrayList.size(); j++){
+                if(userArrayList.get(j).getScore() > highest){
+                    highest = userArrayList.get(j).getScore();
+                    index = j;
+                }
+            }
+            temp = userArrayList.get(i);
+            userArrayList.set(i, userArrayList.get(index));
+            userArrayList.set(index, temp);
+            highest = 0;
+            index = 0;
+        }
     }
 }

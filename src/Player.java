@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Player extends JComponent {
-    private Color color;
+    private Image image;
     private int xp;
     private int yp;
     private int w;
@@ -11,14 +11,18 @@ public class Player extends JComponent {
     // jump sequence attributes
     private boolean jump = false;
     private int jumpCount = 0;
+    private boolean moving_right;
+
+
 
     //constructor
     public Player() {
-        setColor(Color.GREEN);
+        setImage(image = new ImageIcon("images\\marioRight.png").getImage());
         setXp(100);
         setYp(530);
         setH(30);
         setW(30);
+        moving_right = true;
     }
 
 
@@ -83,11 +87,40 @@ public class Player extends JComponent {
         return new Point(getXp() + (getW()/2), getYp() + getH());
     }
 
+    public void changeImage(int i){
+        switch (i){
+            case 0:
+                image = new ImageIcon("images\\marioRight.png").getImage();
+                break;
+            case 1:
+                image = new ImageIcon("images\\marioLeft.png").getImage();
+                break;
+            case 3:
+                if(this.moving_right) {
+                    image = new ImageIcon("images\\marioJump.png").getImage();
+                    break;
+                }
+                else{
+                    image = new ImageIcon("images\\marioJumpLeft.png").getImage();
+                    break;
+                }
+            case 4:
+                if(this.moving_right) {
+                    image = new ImageIcon("images\\marioRight.png").getImage();
+                    break;
+                }
+                else{
+                    image = new ImageIcon("images\\marioLeft.png").getImage();
+                    break;
+                }
+        }
+    }
+
 
     //getters
 
-    public Color getColor() {
-        return color;
+    public Image getImage() {
+        return image;
     }
 
     public int getXp() {
@@ -106,10 +139,14 @@ public class Player extends JComponent {
         return h;
     }
 
+    public boolean isMoving_right() {
+        return moving_right;
+    }
+
     //setters
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     public void setXp(int xp) {
@@ -126,6 +163,10 @@ public class Player extends JComponent {
 
     public void setH(int h) {
         this.h = h;
+    }
+
+    public void setMoving_right(boolean moving_right) {
+        this.moving_right = moving_right;
     }
 
     //atttempting to write a touches algorithim
