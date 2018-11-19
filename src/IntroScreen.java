@@ -36,8 +36,9 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
         setSize(1010, 550);
         setLocationRelativeTo(null);
         setResizable(false);
+        setBackground(Color.gray);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        image = new ImageIcon("C:\\Users\\t00175979\\IdeaProjects\\DonkeyKong\\images\\homescreen.png");
+        image = new ImageIcon("images\\homescreen.png");
 
 
         JLabel jLabel = new JLabel(image);
@@ -201,19 +202,12 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
         }
     }
 
-    public static void getTopTen(){
+    public static ArrayList<User> sortedHighScores(){
         int highest = 0;
         int index = 0;
-        int size;
         User temp = new User();
 
-        if (userArrayList.size() > 10){
-            size = 10;
-        }
-        else{
-            size = userArrayList.size();
-        }
-        for(int i=0;i<size;i++){
+        for(int i=0;i<userArrayList.size()-1;i++){
             for(int j=i; j<userArrayList.size(); j++){
                 if(userArrayList.get(j).getScore() > highest){
                     highest = userArrayList.get(j).getScore();
@@ -226,5 +220,6 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
             highest = 0;
             index = 0;
         }
+        return userArrayList;
     }
 }
