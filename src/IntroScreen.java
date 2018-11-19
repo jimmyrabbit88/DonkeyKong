@@ -19,26 +19,29 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
     public static String username = "";
     private static ArrayList<User> userArrayList = new ArrayList<>();
     private ImageIcon image;
+    private static int fullWidth;
+    private static int fullHeight;
 
     public static void main(String[] args) {
         loadHighScores();
         IntroScreen is = new IntroScreen();
         is.setVisible(true);
+
     }
 
     public IntroScreen() {
         Container container;
-
-
+        setBounds(0,0,1010,550);
         setTitle("Donkey Kong by Jason Dowling");
-        setSize(750, 450);
-        setLocation(400, 300);
+
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        image = new ImageIcon("C:\\Users\\t00175979\\IdeaProjects\\DonkeyKong\\images\\homescreen.jpg");
-        //BufferedImage image = new ImageIO.read(new File("images\\homescreen.jpg"));
+        image = new ImageIcon("C:\\Users\\t00175979\\IdeaProjects\\DonkeyKong\\images\\homescreen.png");
+
+
         JLabel jLabel = new JLabel(image);
-        jLabel.setBounds(-15,0,750,350);
+        jLabel.setBackground(Color.black);
+        jLabel.setBounds(0,0, 1000, 500);
 
 
         container = getContentPane();
@@ -60,12 +63,13 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
         Button newGame = new Button("Start Game");
         newGame.setLocation(100, 100);
         newGame.setSize(100, 100);
-        container.add(newGame);
+        jLabel.add(newGame);
 
-        Button highScores = new Button("High Scores");
+        //image = new ImageIcon("\\images\\play.png");
+        JButton highScores = new JButton(new ImageIcon("images\\play.png"));
         highScores.setLocation(300, 100);
-        highScores.setSize(100, 100);
-        container.add(highScores);
+        highScores.setSize(200, 100);
+        jLabel.add(highScores);
 
         // NEW GAME BUTTON
         newGame.addActionListener((ActionEvent e) -> {
@@ -91,7 +95,10 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
                 }
         );
 
+
         repaint();
+
+
 
     }
 
