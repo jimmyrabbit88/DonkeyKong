@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class highScores extends JFrame implements ActionListener {
-    private static int globalon = 1;
+    private static int globalon = 0;
     private JTextArea jta;
 
 
@@ -31,6 +31,9 @@ public class highScores extends JFrame implements ActionListener {
         container.add(global);
 
         global.addActionListener((ActionEvent e)->{
+            globalon = 0;
+            this.dispose();
+            new highScores();
 
         });
 
@@ -38,14 +41,22 @@ public class highScores extends JFrame implements ActionListener {
         mine.setBounds(300, 50, 250, 80);
         container.add(mine);
         mine.addActionListener((ActionEvent e)->{
+            if(IntroScreen.getUsername().equals("")){
+                IntroScreen.login();
+            }
+            globalon = 1;
+            this.dispose();
+            new highScores();
+
 
 
         });
+
         if(globalon == 0) {
-            jta = globalHighScoresText(globalon);
+            jta = globalHighScoresText();
         }
         else{
-            mineHighScoresText();
+            jta = mineHighScoresText();
         }
 
 
@@ -53,11 +64,11 @@ public class highScores extends JFrame implements ActionListener {
         jta.setBounds(100,170, 400, 500);
         container.add(jta);
         setVisible(true);
+        repaint();
     }
 
 
-    public JTextArea globalHighScoresText(int num){
-        System.out.println("my num" + num);
+    public JTextArea globalHighScoresText(){
         JTextArea jta = new JTextArea();
         jta.setFont(new Font("monospaced", Font.PLAIN, 15));
         ArrayList<User> scores = IntroScreen.sortedHighScores();
@@ -69,7 +80,7 @@ public class highScores extends JFrame implements ActionListener {
             size = scores.size();
         }
         for(int i=0; i<size; i++){
-            jta.append(String.format("%-3s::%-25s%-7s\n", i,scores.get(i).getName(), scores.get(i).getScore()));
+            jta.append(String.format("%-3s::%-25s%-7s\n", i+1,scores.get(i).getName(), scores.get(i).getScore()));
         }
         return  jta;
     }
@@ -85,14 +96,13 @@ public class highScores extends JFrame implements ActionListener {
         else{
             size = scores.size();
         }
+        int j =1;
         for(int i=0; i<size; i++){
             if(IntroScreen.getUsername().equals(scores.get(i).getName())){
-                jta.append(String.format("%-3s::%-25s%-7s\n", i,scores.get(i).getName(), scores.get(i).getScore()));
-                System.out.println(IntroScreen.getUsername());
-                System.out.println(scores.get(i).getName());
+                jta.append(String.format("%-3s::%-25s%-7s\n", j,scores.get(i).getName(), scores.get(i).getScore()));
+                j++;
             }
         }
-        System.out.println(IntroScreen.getUsername());
         return jta;
     }
 

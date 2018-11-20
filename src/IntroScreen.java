@@ -171,7 +171,6 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
 
     public static void addHighScore(User usr) throws IOException{
         userArrayList.add(usr);
-        System.out.println("A");
         File file = new File("Scores.dat");
         FileOutputStream fos = new FileOutputStream(file);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -205,7 +204,7 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
     public static ArrayList<User> sortedHighScores(){
         int highest = 0;
         int index = 0;
-        User temp = new User();
+        User temp;
 
         for(int i=0;i<userArrayList.size()-1;i++){
             for(int j=i; j<userArrayList.size(); j++){
@@ -220,6 +219,7 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
             highest = 0;
             index = 0;
         }
+        JOptionPane.showMessageDialog(null, userArrayList.get(0).getScore());
         return userArrayList;
     }
 }

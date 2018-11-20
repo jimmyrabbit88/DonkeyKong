@@ -1,3 +1,8 @@
+//Player.java
+/**
+ * The Player class
+ */
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -16,6 +21,11 @@ public class Player extends JComponent {
 
 
     //constructor
+
+    /**
+     * constructor for the Player class
+     * this sets up the default attributes for an Instance of the Player class
+     */
     public Player() {
         setImage(image = new ImageIcon("images\\marioRight.png").getImage());
         setXp(100);
@@ -29,64 +39,113 @@ public class Player extends JComponent {
     // methods getters and setters that allow the player to jump
     // these have been kept together to allow them to be removed later if jump sequence is altered
 
-
+    /** method to set jump boolean
+     * @param jump weather jump is true or false
+     */
     public void setJump(boolean jump) {
         this.jump = jump;
     }
+
+    /**Method to check if jump is set to true or false
+     * @return jump
+     */
 
     public boolean isJump() {
         return jump;
     }
 
+    /**
+     * Method to move the sprites co-ordinate up( Reduce y co-ordinate)
+     * @param u integer value to reduce y by.
+     */
     public void moveUp(int u){
         yp -= u;
     }
+    /**
+     * Method to move the sprites co-ordinate down( Increase y co-ordinate)
+     * @param d integer value to reduce y by.
+     */
     public void moveDown(int d){
         yp += d;
     }
 
+    /**
+     * Method to get the JumpCount(an int which stores the number of times the jump sequence has been active for).
+     * @return jumpCount.
+     */
     public int getJumpCount() {
         return jumpCount;
     }
 
+    /**
+     * Method to set the JumpCount(an int which stores the number of times the jump sequence has been active for).
+     * @param jumpCount integer value representing the jumpCount
+     */
     public void setJumpCount(int jumpCount) {
         this.jumpCount = jumpCount;
     }
 
+    /**
+     * Method to add 1 to the JumpCount.
+     */
     public void jumpCountadd(){
         jumpCount++;
     }
+
+    /**
+     * Method to remove one from the JumpCount
+     */
     public void jumpCountless(){
         jumpCount--;
     }
     //end of jump sequence
 
     //methods
+
+    /**
+     * Method to move the sprite Right by 2 px
+     */
     public void moveRight(){
         xp += 2;
     }
-
+    /**
+     * Method to move the sprite Left by 2 px
+     */
     public void moveLeft(){
         xp -= 2;
     }
-
+    /**
+     * Method to move the sprite up by 1 px
+     */
     public void moveUp(){
         yp -= 1;
     }
-
+    /**
+     * Method to move the sprite Down by 1 px
+     */
     public void moveDown(){
         yp += 1;
     }
 
-
+    /**
+     * Method to get the Bottom point of the sprite plus 1px
+     * @return Point the bottom Point of the Player object plus 1px
+     */
     public Point bottomPlus1(){
         return new Point(getXp() + (getW()/2), getYp() + (getH() + 1));
     }
-
+    /**
+     * Method to get the Bottom point of the sprite
+     * @return Point the bottom Point of the Player object
+     */
     public Point bottom(){
         return new Point(getXp() + (getW()/2), getYp() + getH());
     }
 
+    /**
+     * Method to change the image of the Player Object
+     * @param i an integer which is used to select which images to assign to the Player object.
+     */
     public void changeImage(int i){
         switch (i){
             case 0:

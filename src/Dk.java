@@ -20,12 +20,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     private static Timer t;
     private static Dk gui;
     private boolean onLadder = false;
-
-    //image code
     private static Image image;
-    //to here
-
-
     private static int framecount = 0;
     private static int TTNB = 200;  // this may be changed here to alter speed of new block eg level 2 may be harder.
 
@@ -41,8 +36,6 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         framecount = 0;
         user = new User();
         startGame();
-        //JFXPanel fxPanel = new JFXPanel();
-
     }
 
     private static void startGame() {
@@ -160,8 +153,13 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
         //Space Key
         if (e.getKeyCode() == KeyEvent.VK_SPACE){
-            player.changeImage(3);
-            player.setJump(true);
+            if(player.isJump()){
+
+            }
+            else {
+                player.changeImage(3);
+                player.setJump(true);
+            }
         }
 
 
@@ -232,8 +230,11 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
                 player.moveUp(2);
                 player.jumpCountadd();
             }
-            else if (player.getJumpCount() < 80){
+            else if (player.getJumpCount() < 60){
                 player.moveUp(1);
+                player.jumpCountadd();
+            }
+            else if (player.getJumpCount() < 100){
                 player.jumpCountadd();
             }
             else{
@@ -313,8 +314,11 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
     private static void dead() throws IOException {
         t.stop();
-        user.loseLife();
-        if(user.getLives() > 0) {
+
+        if(user.getLives() > 1) {
+
+            System.out.println("stop");
+            user.loseLife();
             allBlocks.removeAll(allBlocks);
             generateBlocks();
             player = new Player();
@@ -325,6 +329,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             gui.setVisible(false);
             IntroScreen.main(null);
             IntroScreen.addHighScore(user);
+            return;
         }
     }
 

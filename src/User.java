@@ -9,7 +9,7 @@ public class User implements Serializable {
     public User() {
         setName(IntroScreen.getUsername());
         setLives(3);
-        setScore(0);
+        setScore(5);
         setMultiplyer(1);
 
     }
