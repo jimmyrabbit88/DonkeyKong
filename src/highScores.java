@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class highScores extends JFrame implements ActionListener {
-    private static boolean globalon = true;
+    private static int globalon = 1;
     private JTextArea jta;
 
 
@@ -21,8 +21,8 @@ public class highScores extends JFrame implements ActionListener {
         container.setBackground(Color.darkGray);
 
         jta = new JTextArea();
-        jta.setFont(new Font("monospaced", Font.PLAIN, 15));
-        jta.setBounds(100,170, 400, 500);
+
+
 
 
         container.setLayout(null);
@@ -31,34 +31,33 @@ public class highScores extends JFrame implements ActionListener {
         container.add(global);
 
         global.addActionListener((ActionEvent e)->{
-            globalon = true;
-            repaint();
+
         });
 
         JButton mine = new JButton(new ImageIcon("images\\mine.png"));
         mine.setBounds(300, 50, 250, 80);
         container.add(mine);
         mine.addActionListener((ActionEvent e)->{
-            globalon = false;
-            repaint();
-        });
 
-        if (globalon){
-            globalHighScoresText();
-            repaint();
+
+        });
+        if(globalon == 0) {
+            jta = globalHighScoresText(globalon);
         }
         else{
-            System.out.println("here");
             mineHighScoresText();
-            repaint();
         }
 
+
+
+        jta.setBounds(100,170, 400, 500);
         container.add(jta);
         setVisible(true);
     }
 
 
-    public JTextArea globalHighScoresText(){
+    public JTextArea globalHighScoresText(int num){
+        System.out.println("my num" + num);
         JTextArea jta = new JTextArea();
         jta.setFont(new Font("monospaced", Font.PLAIN, 15));
         ArrayList<User> scores = IntroScreen.sortedHighScores();
@@ -75,8 +74,8 @@ public class highScores extends JFrame implements ActionListener {
         return  jta;
     }
 
-    public void mineHighScoresText(){
-        jta.removeAll();
+    public JTextArea mineHighScoresText(){
+        JTextArea jta = new JTextArea();
         jta.setFont(new Font("monospaced", Font.PLAIN, 15));
         ArrayList<User> scores = IntroScreen.sortedHighScores();
         int size;
@@ -87,10 +86,14 @@ public class highScores extends JFrame implements ActionListener {
             size = scores.size();
         }
         for(int i=0; i<size; i++){
-            if(IntroScreen.getUsername().equals(scores.get(i).getName()))
-            jta.append(String.format("%-3s::%-25s%-7s\n", i,scores.get(i).getName(), scores.get(i).getScore()));
+            if(IntroScreen.getUsername().equals(scores.get(i).getName())){
+                jta.append(String.format("%-3s::%-25s%-7s\n", i,scores.get(i).getName(), scores.get(i).getScore()));
+                System.out.println(IntroScreen.getUsername());
+                System.out.println(scores.get(i).getName());
+            }
         }
-        System.out.println("hh");
+        System.out.println(IntroScreen.getUsername());
+        return jta;
     }
 
 
