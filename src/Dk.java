@@ -20,7 +20,6 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     private static Timer t;
     private static Dk gui;
     private boolean onLadder = false;
-    private static Image image;
     private static int framecount = 0;
     private static int TTNB = 200;  // this may be changed here to alter speed of new block eg level 2 may be harder.
 
@@ -81,10 +80,10 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
         /*The framecount is counting the number of times the scene has been repainted when it reaches the TTNB (time to new Block) the first White block in the Blocks array
             that blocks color is set to Blue.
         */
+
         for(Block b: allBlocks){
             if(b.isActive()){
-                g.setColor(b.getColor());
-                g.fillOval(b.getxp(), b.getyp(), b.getw(), b.geth());
+                g.drawImage(b.getImage(), b.getxp(), b.getyp(), this);
             }
         }
         if (framecount == TTNB){

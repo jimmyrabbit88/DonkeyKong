@@ -1,12 +1,32 @@
+import javax.swing.*;
 import java.awt.*;
 
 public class PlainBlk extends Block implements Path{
     private int counter=0;
     private int counterFR;
+    private Image image;
 
     public PlainBlk(){
         super();
         super.setColor(Color.GREEN);
+        setImage(image = new ImageIcon("images\\barrel.png").getImage());
+    }
+    public void chgImg(){
+        if (counter%2 == 1){
+            setImage(image = new ImageIcon("images\\barrel.png").getImage());
+        }
+        else{
+            setImage(image = new ImageIcon("images\\barrel2.png").getImage());
+        }
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+
+    public Image getImage() {
+        return image;
     }
 
     public void fallRight(){

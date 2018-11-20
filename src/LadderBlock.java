@@ -1,17 +1,47 @@
+import javax.swing.*;
 import java.awt.*;
 
 public class LadderBlock extends Block implements Path{
         private int counter = 0;
         private int counterFR;
         private boolean downLadder;
+        private Image image;
 
         public LadderBlock(){
             super();
             super.setColor(Color.BLUE);
+            setImage(image = new ImageIcon("images\\barrel.png").getImage());
 
             setDownLadder(false);
 
         }
+
+        public void chgImg(){
+            if (counter%40 < 10){
+                setImage(image = new ImageIcon("images\\barrel.png").getImage());
+                return;
+            }
+            else if (counter%40 <20){
+                setImage(image = new ImageIcon("images\\barrel2.png").getImage());
+                return;
+            }
+            else if (counter%40 <30){
+                setImage(image = new ImageIcon("images\\barrel3.png").getImage());
+                return;
+            }
+            else if (counter%40 <40){
+                setImage(image = new ImageIcon("images\\barrel4.png").getImage());
+                return;
+            }
+        }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public Image getImage() {
+        return image;
+    }
 
     public void fallRight(){
         incx();
@@ -54,6 +84,7 @@ public class LadderBlock extends Block implements Path{
         if (counter <= 590 && downLadder == false){
             fallRight();
             counter++;
+            chgImg();
             return;
         }
         else if(counter <= 580 && downLadder == true) {
@@ -78,6 +109,7 @@ public class LadderBlock extends Block implements Path{
         if(counter <= 1115){
             fallLeft();
             counter++;
+            chgImg();
             return;
         }
         if (counter<=1206){
@@ -91,6 +123,7 @@ public class LadderBlock extends Block implements Path{
         if (counter <= 1637){
             fallRight();
             counter++;
+            chgImg();
             return;
         }
         if (counter == 1638){
@@ -104,6 +137,7 @@ public class LadderBlock extends Block implements Path{
         if (counter <= 2160){
             fallLeft();
             counter++;
+            chgImg();
             return;
         }
         if (counter == 2161){
@@ -117,6 +151,7 @@ public class LadderBlock extends Block implements Path{
         if (counter <= 2684){
             fallRight();
             counter++;
+            chgImg();
             return;
         }
         if (counter < 2804){
@@ -127,6 +162,7 @@ public class LadderBlock extends Block implements Path{
         if (counter <= 3310){
             decx();
             counter++;
+            chgImg();
             return;
         }
         if (counter == 3311){

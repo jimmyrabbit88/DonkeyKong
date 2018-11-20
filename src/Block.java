@@ -107,6 +107,10 @@ public abstract class Block {
     //clean these up if time permits
     public abstract void runPath();
 
+    public abstract void chgImg();
+
+    public abstract Image getImage();
+
 
 
     // centerPoint
