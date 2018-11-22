@@ -314,17 +314,24 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     private static void dead() throws IOException {
         t.stop();
 
-        if(user.getLives() > 1) {
+
+        if(user.getLives() > 0) {
 
             System.out.println("stop");
             user.loseLife();
-            allBlocks.removeAll(allBlocks);
+            ArrayList<Block> newb = new ArrayList<Block>();
+            allBlocks = newb;
             generateBlocks();
             player = new Player();
             framecount=0;
-            t.start();
+            if(!t.isRunning()) {
+                t.start();
+            }
         }
         else {
+
+            ArrayList<Block> newb = new ArrayList<Block>();
+            allBlocks = newb;
             gui.setVisible(false);
             IntroScreen.main(null);
             IntroScreen.addHighScore(user);
@@ -345,11 +352,15 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
     }
 
     private static void cleanArrayListOfBlocks(){
+
+        ArrayList<Block> newb = new ArrayList<Block>();
+
         for (Block b : allBlocks) {
-            if (!b.isActive()) {
-                allBlocks.remove(b);
+            if (b.isActive()) {
+                newb.add(b);
             }
         }
+        allBlocks = newb;
     }
 
 
