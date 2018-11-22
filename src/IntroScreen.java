@@ -90,18 +90,7 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
         );
         //HIGH SCORES BUTTON
         highScores.addActionListener((ActionEvent e) -> {
-            /*JTextArealoadHighScores();
-            JTextArea jta = new JTextArea("All High Scores");
-            jta.setFont(new Font("monospaced", Font.PLAIN, 12));
-            jta.setText(String.format("%-20s%-7s\n", "Name", "Score"));
-            getTopTen();
-            for(User usr : userArrayList){
-                jta.append(String.format("%-20s%-7s\n", usr.getName(), usr.getScore()));
-            }
-            JOptionPane.showMessageDialog(null, jta);
-                */
             highScores h = new highScores();
-
         });
 
 

@@ -39,15 +39,15 @@ public class Player extends JComponent {
     // methods getters and setters that allow the player to jump
     // these have been kept together to allow them to be removed later if jump sequence is altered
 
-    /** method to set jump boolean
-     * @param jump weather jump is true or false
+    /** Mutator method to set jump boolean
+     * @param jump which boolean you wish to set jump to.
      */
     public void setJump(boolean jump) {
         this.jump = jump;
     }
 
     /**Method to check if jump is set to true or false
-     * @return jump
+     * @return true or false
      */
 
     public boolean isJump() {
@@ -178,52 +178,89 @@ public class Player extends JComponent {
 
     //getters
 
+    /**
+     * Accessor Method to get the Image object assigned to the player object.
+     * @return Image the image object.
+     */
     public Image getImage() {
         return image;
     }
 
+    /**
+     * Accessor Method to get the top left X co-ordinate of the object.
+     * @return int the x co-ordinate.
+     */
     public int getXp() {
         return xp;
     }
-
+    /**
+     * Accessor Method to get the top left Y co-ordinate of the object.
+     * @return int the y co-ordinate.
+     */
     public int getYp() {
         return yp;
     }
-
+    /**
+     * Accessor Method to get the Width of the object.
+     * @return int the Width in pixels.
+     */
     public int getW() {
         return w;
     }
-
+    /**
+     * Accessor Method to get the Height of the object.
+     * @return int the Height in pixels.
+     */
     public int getH() {
         return h;
     }
 
-    public boolean isMoving_right() {
+
+    /*public boolean isMoving_right() {
         return moving_right;
-    }
+    }*/
 
     //setters
 
+    /**
+     * Mutator Method to assign an image to the player object.
+     * @param image the image object to assign.
+     */
     public void setImage(Image image) {
         this.image = image;
     }
-
+    /**
+     * Mutator Method to set the x co-ordinate to the player object.
+     * @param xp the x-point.
+     */
     public void setXp(int xp) {
         this.xp = xp;
     }
-
+    /**
+     * Mutator Method to assign the y co-ordinate to the player object.
+     * @param yp the y-point.
+     */
     public void setYp(int yp) {
         this.yp = yp;
     }
-
+    /**
+     * Mutator Method to assign a width to the player object.
+     * @param w the width.
+     */
     public void setW(int w) {
         this.w = w;
     }
-
+    /**
+     * Mutator Method to assign a height to the player object.
+     * @param h the height.
+     */
     public void setH(int h) {
         this.h = h;
     }
-
+    /**
+     * Mutator Method to set moving_right boolean to true or false.
+     * @param moving_right true or false.
+     */
     public void setMoving_right(boolean moving_right) {
         this.moving_right = moving_right;
     }
@@ -231,6 +268,12 @@ public class Player extends JComponent {
     //atttempting to write a touches algorithim
     //create an array of points for Player
     //these are the outside points of the player and are calculated from the x,y coordinate
+
+    /**
+     * Method to generate an array of points which surround the player.
+     * This method creates an array of 8 points which surround the player object.
+     */
+
     public void PopPointsArray(){
         playerPoints[0] = new Point(getXp(), getYp());
         playerPoints[1] = new Point(getXp(), getYp() + (getH()/2));
@@ -246,6 +289,12 @@ public class Player extends JComponent {
     this is done by finding the center point of the block
     and testing it against the 9 points of the player object.
     while this is not perfect its close enough
+     */
+
+    /**
+     * Method to test if the player object is in contact with a block object
+     * @param b the block object to be tested
+     * @return true if one of the player objects points are in contact with the points of the block object
      */
     public boolean touches(Block b){
         Point cp = b.getCP();

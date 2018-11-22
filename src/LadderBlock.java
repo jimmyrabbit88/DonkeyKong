@@ -81,13 +81,13 @@ public class LadderBlock extends Block implements Path{
         if (counter == 485) {
             random50();
         }
-        if (counter <= 590 && downLadder == false){
+        if (counter <= 590 && !isDownLadder()){
             fallRight();
             counter++;
             chgImg();
             return;
         }
-        else if(counter <= 580 && downLadder == true) {
+        else if(counter <= 580 && isDownLadder()) {
             incy();
             counter++;
             return;
