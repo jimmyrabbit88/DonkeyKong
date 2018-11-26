@@ -85,6 +85,7 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
                         Dk.main(null);
                     } else {
                         JOptionPane.showMessageDialog(null, "you must login first");
+                        login();
                     }
                 }
         );
@@ -123,7 +124,7 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
     public static void createHelpMenu() {
         JMenuItem item;
 
-        helpMenu = new JMenu("help");
+        helpMenu = new JMenu("Help");
 
         item = new JMenuItem("About");
         item.addActionListener((ActionEvent e) -> {
@@ -208,7 +209,6 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
             highest = 0;
             index = 0;
         }
-        JOptionPane.showMessageDialog(null, userArrayList.get(0).getScore());
         return userArrayList;
     }
 }

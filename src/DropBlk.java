@@ -30,6 +30,17 @@ public class DropBlk extends Block implements Path {
     }
 
     public void runPath() {
+        if(counter < 100){
+            incy();
+        counter++;
+        if (counter%2 == 0){
+            incx();
+            }
+            return;
+         }
+
+
+
         if(counter < 620){
             incy();
             counter++;

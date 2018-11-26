@@ -316,8 +316,6 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
 
         if(user.getLives() > 0) {
-
-            System.out.println("stop");
             user.loseLife();
             ArrayList<Block> newb = new ArrayList<Block>();
             allBlocks = newb;
@@ -333,6 +331,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             ArrayList<Block> newb = new ArrayList<Block>();
             allBlocks = newb;
             gui.setVisible(false);
+            player = new Player();
             IntroScreen.main(null);
             IntroScreen.addHighScore(user);
             return;
