@@ -23,13 +23,14 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
     private static int fullHeight;
 
     public static void main(String[] args) {
-        loadHighScores();
-        IntroScreen is = new IntroScreen();
-        is.setVisible(true);
+        //loadHighScores();
+        //IntroScreen is = new IntroScreen();
+        //is.setVisible(true);
 
     }
 
     public IntroScreen() {
+        setVisible(true);
         Container container;
         //setBounds(0,0,1010,550);
         setTitle("Donkey Kong by Jason Dowling");
@@ -82,7 +83,7 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
         newGame.addActionListener((ActionEvent e) -> {
                     if (!username.equals("")) {
                         this.setVisible(false);
-                        Dk.main(null);
+                        Dk.setup();
                     } else {
                         JOptionPane.showMessageDialog(null, "you must login first");
                         login();

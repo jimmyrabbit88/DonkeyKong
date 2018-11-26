@@ -28,7 +28,10 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
 
     public static void main(String[] args) {
-        //this is the main code it generates the floor all the game objects and starts the GUI
+        new IntroScreen();
+    }
+
+    public static void setup(){
         generatefloors();
         generateBlocks();
         generateLadders();
@@ -223,8 +226,8 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             for (Block b:allBlocks){
                 if ((player.getXp() == b.getxp()) && (b.getyp() - player.getYp()) <= 50 && (b.getyp() - player.getYp()) >= 0){
                     user.scoreOverBlock();
-                    //String audioFile1 = "audio.jump.wav";
-                   // AudioPlayer.playAudio(audioFile1);
+                    //String audioFile1 = "images\\jump.wav";
+                    //AudioPlayer.playAudio(audioFile1);
                 }
             }
             if (player.getJumpCount() < 40){
