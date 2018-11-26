@@ -56,6 +56,8 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
 
     // overwriting the paint component method, this method is called automatically when the window is created or moved.
     // it is called by the repaint method.
+
+    // researched this method on google looking for how to paint objects to the screen      https://docs.oracle.com/javase/tutorial/uiswing/painting/problems.html
     @Override
     protected void paintComponent(Graphics g) {
         //Here the floors are passed to in as attributes to create instances of the polygon class. the floor.contains or floor.intersects methods only work with Polygons.
