@@ -22,15 +22,14 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
     private static int fullWidth;
     private static int fullHeight;
 
-    /*public static void main(String[] args) {
-        //loadHighScores();
-        //IntroScreen is = new IntroScreen();
-        //is.setVisible(true);
+   public static void main(String[] args) {
+        loadHighScores();
+        IntroScreen is = new IntroScreen();
+        is.setVisible(true);
 
-    }*/
+    }
 
     public IntroScreen() {
-        setVisible(true);
         Container container;
         //setBounds(0,0,1010,550);
         setTitle("Donkey Kong by Jason Dowling");

@@ -337,7 +337,7 @@ public class Dk  extends JComponent implements KeyListener, ActionListener{
             allBlocks = newb;
             gui.setVisible(false);
             player = new Player();
-            new IntroScreen();
+            IntroScreen.main(null);
             IntroScreen.addHighScore(user);
             return;
         }
