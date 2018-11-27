@@ -1,5 +1,5 @@
-import jdk.nashorn.internal.objects.Global;
-import jdk.nashorn.internal.scripts.JO;
+//import jdk.nashorn.internal.objects.Global;
+//import jdk.nashorn.internal.scripts.JO;
 
 import javax.imageio.IIOException;
 import java.io.IOException;
@@ -22,12 +22,12 @@ public class IntroScreen extends JFrame implements ActionListener, Serializable{
     private static int fullWidth;
     private static int fullHeight;
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         //loadHighScores();
         //IntroScreen is = new IntroScreen();
         //is.setVisible(true);
 
-    }
+    }*/
 
     public IntroScreen() {
         setVisible(true);
